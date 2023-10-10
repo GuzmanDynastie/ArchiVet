@@ -71,11 +71,11 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         usuario = new Usuario();
         obd = new BD.OBD();
         ocultarBarraTitulo();
-        
+
         Realizar.setLineWrap(true);
         Resultado.setLineWrap(true);
         obd.tablaConsultas(Previos, Mascota.getText());
-        Vacuna =  new ventana_aplicarVacuna(adminUsuario);
+        Vacuna = new ventana_aplicarVacuna(adminUsuario);
     }
 
     @SuppressWarnings("unchecked")
@@ -563,7 +563,17 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_PreviosMouseClicked
 
     private void agregarconsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarconsultaActionPerformed
-        validar();
+        ventana_aplicarConsulta consulta = new ventana_aplicarConsulta();
+        jScrollPane3.setVisible(false);
+        jScrollPane4.setVisible(false);
+        jScrollPane6.setVisible(false);
+        Precio.setVisible(false);
+        //Resultado.setSize(0, 0);
+        lPrecio.setVisible(false);
+        FondoConsultas.add(consulta);
+        consulta.setVisible(true);
+        
+//validar();
     }//GEN-LAST:event_agregarconsultaActionPerformed
 
     private void cerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarMouseClicked
