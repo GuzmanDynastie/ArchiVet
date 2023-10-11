@@ -10,7 +10,7 @@ public abstract class DAO {
     final protected static String SERVIDOR = "localhost:3306"; //127.0.0.1
     final protected static String NOMBRE_BD = "sql9598240";
     final protected static String USUARIO = "root";
-    final protected static String CONTRASENIA = "GuzmanJR7";
+    final protected static String CONTRASENIA = "";
 
     protected static ConexionBaseDatosGenerica connection;
 

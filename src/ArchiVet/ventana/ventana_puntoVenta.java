@@ -24,6 +24,7 @@ public class ventana_puntoVenta extends javax.swing.JInternalFrame {
     private AdminUsuario adminUsuario;
 
     public static ventana_historialMedico historialMedico;
+    public static ventana_aplicarConsulta consulta;
     public static OBD obd;
 
     public static int seleccionDueno, NumeroID, ID_PET;
@@ -49,6 +50,10 @@ public class ventana_puntoVenta extends javax.swing.JInternalFrame {
                 historialMedico.CargarTablaVacuna();
                 historialMedico.CargarTablaDesparacitar();
                 obd.tablaConsultas(historialMedico.Previos, NAME_PET);
+                
+                consulta.mascota=NAME_PET;
+                consulta.IDMASCOTA=ID_PET;
+                consulta.IDPROPIETARIO=NumeroID;
 
             } catch (IllegalStateException ex) {
                 System.err.println(ex.getMessage());

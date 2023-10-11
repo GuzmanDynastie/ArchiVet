@@ -4,7 +4,10 @@
  */
 package ArchiVet.ventana;
 
+import ArchiVet.Modelo.Usuario;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Date;
 import javax.swing.JComponent;
 
 /**
@@ -13,8 +16,16 @@ import javax.swing.JComponent;
  */
 public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
 
+    private Usuario usuario;
+    private ArchiVet.Imagen.imagenes imagen;
+    private BD.OBD obd;
+    private Date Actual = new Date();
+    private long longActual = Actual.getTime();
+    private java.sql.Date Fecha = new java.sql.Date(longActual);
     private JComponent Barra;
     private Dimension dimBarra;
+    public int IDMASCOTA, IDPROPIETARIO;
+    public String mascota, propietario;
 
     private void ocultarBarraTitulo() {
         Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
@@ -24,12 +35,42 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
         repaint();
     }
 
-    /**
-     * Creates new form ventana_aplicarConsulta
-     */
+    public void mostrarcomponentes() {
+        ventana_historialMedico.jScrollPane3.setVisible(true);
+        ventana_historialMedico.jScrollPane4.setVisible(true);
+        ventana_historialMedico.jScrollPane6.setVisible(true);
+        ventana_historialMedico.Precio.setVisible(true);
+        ventana_historialMedico.lPrecio.setVisible(true);
+        ventana_historialMedico.agregarconsulta.setVisible(true);
+        ventana_historialMedico.MAS1.setVisible(true);
+        ventana_historialMedico.MAS2.setVisible(true);
+        ventana_historialMedico.historial1.setEnabled(true);
+        ventana_historialMedico.cerrar.setVisible(true);
+    }
+    
+    private void limpiar() {
+        Motivo.setText("");
+        Diagnostico.setText("");
+        Receta.setText("");
+        Precio.setText("");
+    }
+
+    private void subir() {
+        obd.subirConsulta(IDMASCOTA, mascota, Fecha, "Consulta", Float.parseFloat(Precio.getText()), Motivo.getText(), IDPROPIETARIO, usuario.getUsuario());
+        obd.historial(IDMASCOTA, mascota, "Macho", "Consulta", Float.parseFloat(Precio.getText()), Motivo.getText(), IDPROPIETARIO);
+        obd.tablaConsultas(ventana_historialMedico.Previos, mascota);
+        limpiar();
+        mostrarcomponentes();
+    }
+
     public ventana_aplicarConsulta() {
         initComponents();
         ocultarBarraTitulo();
+        imagen = new ArchiVet.Imagen.imagenes();
+        usuario = new Usuario();
+        Motivo.setLineWrap(true);
+        Diagnostico.setLineWrap(true);
+        Receta.setLineWrap(true);
     }
 
     /**
@@ -41,56 +82,134 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        Fondo = new javax.swing.JPanel();
+        lMotivo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Motivo = new javax.swing.JTextArea();
+        lDiagnostico = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Diagnostico = new javax.swing.JTextArea();
+        lReceta = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Receta = new javax.swing.JTextArea();
+        lPrecio = new javax.swing.JLabel();
+        Guardar = new javax.swing.JLabel(){
+            public void paintComponent(Graphics g){
+                g.drawImage(imagen.gua,0,0,getWidth(),getHeight(),this);
+            }
+        };
+        Precio = new javax.swing.JTextField();
 
-        setMaximumSize(new java.awt.Dimension(1796, 958));
-        setMinimumSize(new java.awt.Dimension(1796, 958));
+        setMaximumSize(new java.awt.Dimension(1796, 978));
+        setMinimumSize(new java.awt.Dimension(1796, 978));
+        setPreferredSize(new java.awt.Dimension(1796, 978));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        lMotivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lMotivo.setText("Motivo de consulta");
+
+        Motivo.setColumns(20);
+        Motivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Motivo.setRows(5);
+        Motivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jScrollPane1.setViewportView(Motivo);
+
+        lDiagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lDiagnostico.setText("Diagnostico");
+
+        Diagnostico.setColumns(20);
+        Diagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Diagnostico.setRows(5);
+        Diagnostico.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jScrollPane3.setViewportView(Diagnostico);
+
+        lReceta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lReceta.setText("Receta");
+
+        Receta.setColumns(20);
+        Receta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Receta.setRows(5);
+        Receta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jScrollPane2.setViewportView(Receta);
+
+        lPrecio.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lPrecio.setText("Precio");
+
+        Guardar.setMaximumSize(new java.awt.Dimension(75, 75));
+        Guardar.setMinimumSize(new java.awt.Dimension(75, 75));
+        Guardar.setOpaque(true);
+        Guardar.setPreferredSize(new java.awt.Dimension(75, 75));
+        Guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GuardarMouseClicked(evt);
             }
         });
 
-        jLabel1.setText("jLabel1");
+        Precio.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Precio.setMaximumSize(new java.awt.Dimension(150, 35));
+        Precio.setMinimumSize(new java.awt.Dimension(150, 35));
+        Precio.setPreferredSize(new java.awt.Dimension(150, 35));
 
-        jLabel2.setText("jLabel2");
-
-        jLabel3.setText("jLabel3");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1660, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
-                .addContainerGap())
+        javax.swing.GroupLayout FondoLayout = new javax.swing.GroupLayout(Fondo);
+        Fondo.setLayout(FondoLayout);
+        FondoLayout.setHorizontalGroup(
+            FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FondoLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lDiagnostico)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(FondoLayout.createSequentialGroup()
+                        .addComponent(lReceta)
+                        .addGap(741, 741, 741))
+                    .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+                            .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(FondoLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(146, 146, 146))
+                                .addGroup(FondoLayout.createSequentialGroup()
+                                    .addGap(104, 104, 104)
+                                    .addComponent(lPrecio)
+                                    .addContainerGap()))))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 871, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel3))
+        FondoLayout.setVerticalGroup(
+            FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lReceta))
+                .addGap(18, 18, 18)
+                .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FondoLayout.createSequentialGroup()
+                        .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(FondoLayout.createSequentialGroup()
+                                .addComponent(lPrecio)
+                                .addGap(18, 18, 18)
+                                .addComponent(Precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(FondoLayout.createSequentialGroup()
+                                .addComponent(lDiagnostico)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88))))
+                    .addGroup(FondoLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 84, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -98,26 +217,35 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Fondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
+        subir();
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_GuardarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextArea Diagnostico;
+    private javax.swing.JPanel Fondo;
+    public static javax.swing.JLabel Guardar;
+    private javax.swing.JTextArea Motivo;
+    private javax.swing.JTextField Precio;
+    private javax.swing.JTextArea Receta;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lDiagnostico;
+    private javax.swing.JLabel lMotivo;
+    private javax.swing.JLabel lPrecio;
+    private javax.swing.JLabel lReceta;
     // End of variables declaration//GEN-END:variables
 }

@@ -52,6 +52,19 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         repaint();
     }
 
+    public void ocultarcomponentes() {
+        jScrollPane3.setVisible(false);
+        jScrollPane4.setVisible(false);
+        jScrollPane6.setVisible(false);
+        Precio.setVisible(false);
+        lPrecio.setVisible(false);
+        agregarconsulta.setVisible(false);
+        MAS1.setVisible(false);
+        MAS2.setVisible(false);
+        historial1.setEnabled(false);
+        cerrar.setVisible(false);
+    }
+
     public void CargarTablaVacuna() {
         DefaultTableModel mode = (DefaultTableModel) TVacunas.getModel();
         mode.setRowCount(0);
@@ -564,15 +577,10 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
 
     private void agregarconsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarconsultaActionPerformed
         ventana_aplicarConsulta consulta = new ventana_aplicarConsulta();
-        jScrollPane3.setVisible(false);
-        jScrollPane4.setVisible(false);
-        jScrollPane6.setVisible(false);
-        Precio.setVisible(false);
-        //Resultado.setSize(0, 0);
-        lPrecio.setVisible(false);
+        ocultarcomponentes();
         FondoConsultas.add(consulta);
         consulta.setVisible(true);
-        
+
 //validar();
     }//GEN-LAST:event_agregarconsultaActionPerformed
 
@@ -589,11 +597,11 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     private javax.swing.JPanel FondoCarnet;
     private javax.swing.JPanel FondoConsultas;
     private javax.swing.JLabel MAS;
-    private javax.swing.JLabel MAS1;
-    private javax.swing.JLabel MAS2;
+    public static javax.swing.JLabel MAS1;
+    public static javax.swing.JLabel MAS2;
     public static javax.swing.JTextField Mascota;
     private javax.swing.JLabel PRO;
-    private javax.swing.JTextField Precio;
+    public static javax.swing.JTextField Precio;
     public static javax.swing.JTable Previos;
     public static javax.swing.JTextField Propietario;
     private javax.swing.JTextArea Realizar;
@@ -601,18 +609,18 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     public static javax.swing.JTable TDesparacitacion;
     public static javax.swing.JTable TVacunas;
     private javax.swing.JLabel Titulo;
-    private javax.swing.JButton agregarconsulta;
-    private javax.swing.JLabel cerrar;
-    private javax.swing.JTabbedPane historial1;
+    public static javax.swing.JButton agregarconsulta;
+    public static javax.swing.JLabel cerrar;
+    public static javax.swing.JTabbedPane historial1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JLabel lPrecio;
+    public static javax.swing.JScrollPane jScrollPane3;
+    public static javax.swing.JScrollPane jScrollPane4;
+    public static javax.swing.JScrollPane jScrollPane6;
+    public static javax.swing.JLabel lPrecio;
     // End of variables declaration//GEN-END:variables
 }
