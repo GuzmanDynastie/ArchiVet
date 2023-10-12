@@ -14,7 +14,6 @@ public class OBD extends DAO {
     public static Object[] datos = new Object[25];
     public static String sSQL;
 
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////              Medicamentos                //////////////////////////////////////////////////
     public void tablaMedicamentos(JTable tabla, DefaultTableModel mode) {
@@ -220,10 +219,9 @@ public class OBD extends DAO {
         try {
             ResultSet rs = connection.executeQuery(sSQL);
             while (rs.next()) {
-                datos[0] = rs.getString("NOMBRE_MASCOTA");
-                datos[1] = rs.getDate("FECHA").toString();
+                datos[0] = rs.getDate("FECHA").toString();
+                datos[1] = rs.getString("MOTIVO");
                 datos[2] = rs.getString("MEDICO");
-                datos[3] = rs.getString("DESCRIPCION");
                 mode.addRow(datos);
             }
             tabla.setModel(mode);
@@ -232,8 +230,8 @@ public class OBD extends DAO {
         }
     }
 
-    public void subirConsulta(int IDm, String mas,java.sql.Date fec, String ser, float pre,String des,  int IDp, String med) {
-        sSQL = "INSERT INTO historialconsultas(ID_MASCOTA, NOMBRE_MASCOTA, FECHA, SERVICIO, PRECIO, DESCRIPCION, ID_PROPIETARIO, MEDICO) VALUES(?,?,?,?,?,?,?,?)";
+    public void subirConsulta(int IDm, String mas, java.sql.Date fec, String ser, float pre, String mot, String dia, String rec, String par, int IDp, String med) {
+        sSQL = "INSERT INTO historialconsultas(ID_MASCOTA, NOMBRE_MASCOTA, FECHA, SERVICIO, PRECIO, MOTIVO, DIAGNOSTICO, RECETA, PARAMETROS , ID_PROPIETARIO, MEDICO) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = connection.prepare(sSQL);
             pst.setInt(1, IDm);
@@ -241,9 +239,12 @@ public class OBD extends DAO {
             pst.setDate(3, fec);
             pst.setString(4, ser);
             pst.setFloat(5, pre);
-            pst.setString(6, des);
-            pst.setInt(7, IDp);
-            pst.setString(8, med);
+            pst.setString(6, mot);
+            pst.setString(7, dia);
+            pst.setString(8, rec);
+            pst.setString(9, par);
+            pst.setInt(10, IDp);
+            pst.setString(11, med);
             int n = pst.executeUpdate();
             if (n > 0) {
                 System.out.println("Registro realizado");
@@ -338,8 +339,9 @@ public class OBD extends DAO {
             System.out.println("error\n" + ex);
         }
     }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void historial(int IDm, String mascota, String sexo, String servicio, float precio, String descripcion, int IDp){
+    public void historial(int IDm, String mascota, String sexo, String servicio, float precio, String descripcion, int IDp) {
         sSQL = "INSERT INTO historial(ID_MASCOTA, NOMBRE_MASCOTA, SEXO, SERVICIO, PRECIO, DESCRIPCION, ID_PROPIETARIO) VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = connection.prepare(sSQL);

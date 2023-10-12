@@ -32,7 +32,6 @@ public class ventana_puntoVenta extends javax.swing.JInternalFrame {
     public static String NAME_PET;
     public Image logoCuenta;
 
-
     private void entrarHistorial() {
         if (Nombre_Seleccionado.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No se puede acceder con campos vacios");
@@ -46,14 +45,14 @@ public class ventana_puntoVenta extends javax.swing.JInternalFrame {
 
                 historialMedico.Propietario.setText(Nombre_Seleccionado.getText().trim());
                 historialMedico.Mascota.setText(NAME_PET.trim());
-                
+
                 historialMedico.CargarTablaVacuna();
                 historialMedico.CargarTablaDesparacitar();
-                obd.tablaConsultas(historialMedico.Previos, NAME_PET);
-                
-                consulta.mascota=NAME_PET;
-                consulta.IDMASCOTA=ID_PET;
-                consulta.IDPROPIETARIO=NumeroID;
+                obd.tablaConsultas(historialMedico.HistorialConsultas, NAME_PET);
+
+                consulta.mascota = NAME_PET;
+                consulta.IDMASCOTA = ID_PET;
+                consulta.IDPROPIETARIO = NumeroID;
 
             } catch (IllegalStateException ex) {
                 System.err.println(ex.getMessage());
@@ -130,6 +129,7 @@ public class ventana_puntoVenta extends javax.swing.JInternalFrame {
             System.err.println(e.getMessage());
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class DAO {
-    
+
     final protected static String SERVIDOR = "localhost:3306"; //127.0.0.1
     final protected static String NOMBRE_BD = "sql9598240";
     final protected static String USUARIO = "root";
@@ -21,13 +21,13 @@ public abstract class DAO {
     public DAO(String servidor, int puerto, String nombre_bd, String usuario, String contrasenia) {
 
         try {
-           connection = new ConexionBaseDatosGenerica(SERVIDOR, 0, NOMBRE_BD, USUARIO, CONTRASENIA);
-           //connection = new ConexionBaseDatosGenerica("sql9.freesqldatabase.com", 0, NOMBRE_BD, "sql9598240", "LfgbDjiVZ7");
+            connection = new ConexionBaseDatosGenerica(SERVIDOR, 0, NOMBRE_BD, USUARIO, CONTRASENIA);
+            //connection = new ConexionBaseDatosGenerica("sql9.freesqldatabase.com", 0, NOMBRE_BD, "sql9598240", "LfgbDjiVZ7");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void cerrarConexion() {
         if (connection != null) {
             try {
@@ -37,9 +37,5 @@ public abstract class DAO {
             }
         }
     }
-    
-    
-    
-    
-    
+
 }

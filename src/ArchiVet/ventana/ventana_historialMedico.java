@@ -19,31 +19,31 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     private Date Actual = new Date();
     private long longActual = Actual.getTime();
     private java.sql.Date Fecha = new java.sql.Date(longActual);
+    ventana_aplicarConsulta consulta;
 
     private JComponent Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
     private Dimension dimBarra = null;
 
     private void limpiar() {
-        Realizar.setText("");
-        Precio.setText("");
+        //Realizar.setText("");
+        //Precio.setText("");
     }
 
-    private void subir() {
+    /* private void subir() {
         obd.subirConsulta(8, Mascota.getText(), Fecha, "Consulta", Float.parseFloat(Precio.getText()), Realizar.getText(), 2, usuario.getUsuario());
         obd.historial(8, Mascota.getText(), "Macho", "Consulta", Float.parseFloat(Precio.getText()), Realizar.getText(), 2);
-        obd.tablaConsultas(Previos, Mascota.getText());
+        obd.tablaConsultas(HistorialConsultas, Mascota.getText());
         limpiar();
-    }
+    }*/
 
-    private void validar() {
+ /*private void validar() {
         if (Mascota.getText().isBlank() || Propietario.getText().isBlank() || Precio.getText().isBlank() || Realizar.getText().isBlank()) {
             System.out.println("Su ingreso no puede ser realizado si hay campos vacios");
         } else {
             System.out.println("Su ingreso fue exitoso");
             subir();
         }
-    }
-
+    }*/
     private void ocultarBarraTitulo() {
         Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
         dimBarra = Barra.getPreferredSize();
@@ -53,14 +53,19 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     }
 
     public void ocultarcomponentes() {
-        jScrollPane3.setVisible(false);
-        jScrollPane4.setVisible(false);
-        jScrollPane6.setVisible(false);
-        Precio.setVisible(false);
-        lPrecio.setVisible(false);
+        lMotivo.setVisible(false);
+        ScrollMotivo.setVisible(false);
+        lDiagnostico.setVisible(false);
+        ScrollDiagnostico.setVisible(false);
+        lReceta.setVisible(false);
+        ScrollReceta.setVisible(false);
+        lHistorialConsultas.setVisible(false);
+        ScrollHistorialConsultas.setVisible(false);
+        //Precio.setVisible(false);
+        //lPrecio.setVisible(false);
         agregarconsulta.setVisible(false);
-        MAS1.setVisible(false);
-        MAS2.setVisible(false);
+        //MAS1.setVisible(false);
+        //MAS2.setVisible(false);
         historial1.setEnabled(false);
         cerrar.setVisible(false);
     }
@@ -81,13 +86,15 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         initComponents();
         imagen = new ArchiVet.Imagen.imagenes();
         Desparacitar = new ventana_aplicarDesparacitante();
+        consulta = new ventana_aplicarConsulta(adminUsuario);
         usuario = new Usuario();
         obd = new BD.OBD();
         ocultarBarraTitulo();
 
-        Realizar.setLineWrap(true);
-        Resultado.setLineWrap(true);
-        obd.tablaConsultas(Previos, Mascota.getText());
+        Motivo.setLineWrap(true);
+        Diagnostico.setLineWrap(true);
+        Receta.setLineWrap(true);
+        obd.tablaConsultas(HistorialConsultas, Mascota.getText());
         Vacuna = new ventana_aplicarVacuna(adminUsuario);
     }
 
@@ -106,17 +113,19 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         FondoConsultas = new javax.swing.JPanel();
+        lMotivo = new javax.swing.JLabel();
+        ScrollMotivo = new javax.swing.JScrollPane();
+        Motivo = new javax.swing.JTextArea();
+        lDiagnostico = new javax.swing.JLabel();
+        ScrollDiagnostico = new javax.swing.JScrollPane();
+        Diagnostico = new javax.swing.JTextArea();
+        lReceta = new javax.swing.JLabel();
+        ScrollReceta = new javax.swing.JScrollPane();
+        Receta = new javax.swing.JTextArea();
+        ScrollHistorialConsultas = new javax.swing.JScrollPane();
+        HistorialConsultas = new javax.swing.JTable();
         agregarconsulta = new javax.swing.JButton();
-        Precio = new javax.swing.JTextField();
-        lPrecio = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        Previos = new javax.swing.JTable();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        Realizar = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        Resultado = new javax.swing.JTextArea();
-        MAS1 = new javax.swing.JLabel();
-        MAS2 = new javax.swing.JLabel();
+        lHistorialConsultas = new javax.swing.JLabel();
         Barra1 = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         MAS = new javax.swing.JLabel();
@@ -290,6 +299,68 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
 
         FondoConsultas.setBackground(new java.awt.Color(47, 69, 56));
 
+        lMotivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lMotivo.setForeground(new java.awt.Color(255, 255, 255));
+        lMotivo.setText("Motivo de consulta");
+
+        Motivo.setColumns(20);
+        Motivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Motivo.setRows(5);
+        Motivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ScrollMotivo.setViewportView(Motivo);
+
+        lDiagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lDiagnostico.setForeground(new java.awt.Color(255, 255, 255));
+        lDiagnostico.setText("Diagnostico");
+
+        Diagnostico.setColumns(20);
+        Diagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Diagnostico.setRows(5);
+        Diagnostico.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ScrollDiagnostico.setViewportView(Diagnostico);
+
+        lReceta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lReceta.setForeground(new java.awt.Color(255, 255, 255));
+        lReceta.setText("Receta");
+
+        Receta.setColumns(20);
+        Receta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Receta.setRows(5);
+        Receta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ScrollReceta.setViewportView(Receta);
+
+        HistorialConsultas.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        HistorialConsultas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Fecha", "Motivo", "Medico"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        HistorialConsultas.setRowHeight(29);
+        HistorialConsultas.getTableHeader().setResizingAllowed(false);
+        HistorialConsultas.getTableHeader().setReorderingAllowed(false);
+        HistorialConsultas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                HistorialConsultasMouseClicked(evt);
+            }
+        });
+        ScrollHistorialConsultas.setViewportView(HistorialConsultas);
+        if (HistorialConsultas.getColumnModel().getColumnCount() > 0) {
+            HistorialConsultas.getColumnModel().getColumn(0).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(1).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(2).setResizable(false);
+        }
+
         agregarconsulta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
         agregarconsulta.setText("Agregar");
         agregarconsulta.addActionListener(new java.awt.event.ActionListener() {
@@ -298,135 +369,68 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
             }
         });
 
-        Precio.setBackground(new java.awt.Color(0, 0, 0));
-        Precio.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        Precio.setForeground(new java.awt.Color(255, 255, 255));
-
-        lPrecio.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        lPrecio.setForeground(new java.awt.Color(242, 242, 242));
-        lPrecio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lPrecio.setText("Precio");
-
-        Previos.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        Previos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Mascota", "Fecha", "Medico", "Servicio"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        Previos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        Previos.setGridColor(new java.awt.Color(102, 102, 102));
-        Previos.setMaximumSize(new java.awt.Dimension(700, 450));
-        Previos.setMinimumSize(new java.awt.Dimension(700, 450));
-        Previos.setPreferredSize(new java.awt.Dimension(700, 450));
-        Previos.setRowHeight(35);
-        Previos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        Previos.setShowGrid(true);
-        Previos.setShowHorizontalLines(false);
-        Previos.setShowVerticalLines(false);
-        Previos.getTableHeader().setResizingAllowed(false);
-        Previos.getTableHeader().setReorderingAllowed(false);
-        Previos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PreviosMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(Previos);
-        Previos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (Previos.getColumnModel().getColumnCount() > 0) {
-            Previos.getColumnModel().getColumn(0).setResizable(false);
-            Previos.getColumnModel().getColumn(1).setResizable(false);
-            Previos.getColumnModel().getColumn(2).setResizable(false);
-            Previos.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        Realizar.setColumns(20);
-        Realizar.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        Realizar.setRows(5);
-        jScrollPane6.setViewportView(Realizar);
-
-        Resultado.setColumns(20);
-        Resultado.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        Resultado.setRows(5);
-        jScrollPane4.setViewportView(Resultado);
-
-        MAS1.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        MAS1.setForeground(new java.awt.Color(255, 255, 255));
-        MAS1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        MAS1.setText("Descrpcion servicio");
-        MAS1.setMaximumSize(new java.awt.Dimension(100, 35));
-        MAS1.setMinimumSize(new java.awt.Dimension(100, 35));
-        MAS1.setPreferredSize(new java.awt.Dimension(100, 35));
-
-        MAS2.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        MAS2.setForeground(new java.awt.Color(255, 255, 255));
-        MAS2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        MAS2.setText("Descripcion servicio realizado");
-        MAS2.setMaximumSize(new java.awt.Dimension(100, 35));
-        MAS2.setMinimumSize(new java.awt.Dimension(100, 35));
-        MAS2.setPreferredSize(new java.awt.Dimension(100, 35));
+        lHistorialConsultas.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lHistorialConsultas.setForeground(new java.awt.Color(255, 255, 255));
+        lHistorialConsultas.setText("Consultas Anteriores");
 
         javax.swing.GroupLayout FondoConsultasLayout = new javax.swing.GroupLayout(FondoConsultas);
         FondoConsultas.setLayout(FondoConsultasLayout);
         FondoConsultasLayout.setHorizontalGroup(
             FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FondoConsultasLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(MAS1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoConsultasLayout.createSequentialGroup()
                 .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGap(310, 310, 310)
-                        .addComponent(agregarconsulta))
+                        .addGap(600, 600, 600)
+                        .addComponent(lDiagnostico))
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGap(284, 284, 284)
-                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Precio, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                    .addComponent(MAS2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(290, Short.MAX_VALUE))
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addGap(97, 97, 97)
+                                .addComponent(agregarconsulta))
+                            .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lHistorialConsultas)))
+                        .addGap(38, 38, 38)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ScrollMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ScrollDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ScrollReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lReceta))
+                .addContainerGap())
         );
         FondoConsultasLayout.setVerticalGroup(
             FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FondoConsultasLayout.createSequentialGroup()
-                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(lPrecio))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoConsultasLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(MAS1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(MAS2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lReceta)
+                    .addComponent(lHistorialConsultas))
                 .addGap(18, 18, 18)
                 .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addComponent(Precio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ScrollMotivo)
+                            .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(agregarconsulta)
-                        .addGap(32, 32, 32)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(131, Short.MAX_VALUE))
+                        .addComponent(lDiagnostico)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(ScrollDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(agregarconsulta))))
+                    .addGroup(FondoConsultasLayout.createSequentialGroup()
+                        .addComponent(ScrollReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(100, 100, 100))
         );
 
         historial1.addTab("Consultas", FondoConsultas);
@@ -571,19 +575,6 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PropietarioMouseClicked
 
-    private void PreviosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PreviosMouseClicked
-        Resultado.setText(String.valueOf(Previos.getValueAt(Previos.getSelectedRow(), 3)));
-    }//GEN-LAST:event_PreviosMouseClicked
-
-    private void agregarconsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarconsultaActionPerformed
-        ventana_aplicarConsulta consulta = new ventana_aplicarConsulta();
-        ocultarcomponentes();
-        FondoConsultas.add(consulta);
-        consulta.setVisible(true);
-
-//validar();
-    }//GEN-LAST:event_agregarconsultaActionPerformed
-
     private void cerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarMouseClicked
         ventana_menu.FondoBotones.setVisible(true);
         ventana_menu.cerrar.setVisible(true);
@@ -591,21 +582,33 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         panel.setVisible(true);
     }//GEN-LAST:event_cerrarMouseClicked
 
+    private void agregarconsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarconsultaActionPerformed
+        ocultarcomponentes();
+        FondoConsultas.add(consulta);
+        consulta.setVisible(true);
+    }//GEN-LAST:event_agregarconsultaActionPerformed
+
+    private void HistorialConsultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HistorialConsultasMouseClicked
+        Motivo.setText(String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 2)));
+    }//GEN-LAST:event_HistorialConsultasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Barra1;
+    public static javax.swing.JTextArea Diagnostico;
     private javax.swing.JPanel FondoCarnet;
     private javax.swing.JPanel FondoConsultas;
+    public static javax.swing.JTable HistorialConsultas;
     private javax.swing.JLabel MAS;
-    public static javax.swing.JLabel MAS1;
-    public static javax.swing.JLabel MAS2;
     public static javax.swing.JTextField Mascota;
+    public static javax.swing.JTextArea Motivo;
     private javax.swing.JLabel PRO;
-    public static javax.swing.JTextField Precio;
-    public static javax.swing.JTable Previos;
     public static javax.swing.JTextField Propietario;
-    private javax.swing.JTextArea Realizar;
-    private javax.swing.JTextArea Resultado;
+    public static javax.swing.JTextArea Receta;
+    public static javax.swing.JScrollPane ScrollDiagnostico;
+    public static javax.swing.JScrollPane ScrollHistorialConsultas;
+    public static javax.swing.JScrollPane ScrollMotivo;
+    public static javax.swing.JScrollPane ScrollReceta;
     public static javax.swing.JTable TDesparacitacion;
     public static javax.swing.JTable TVacunas;
     private javax.swing.JLabel Titulo;
@@ -618,9 +621,9 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    public static javax.swing.JScrollPane jScrollPane3;
-    public static javax.swing.JScrollPane jScrollPane4;
-    public static javax.swing.JScrollPane jScrollPane6;
-    public static javax.swing.JLabel lPrecio;
+    public static javax.swing.JLabel lDiagnostico;
+    private javax.swing.JLabel lHistorialConsultas;
+    public static javax.swing.JLabel lMotivo;
+    public static javax.swing.JLabel lReceta;
     // End of variables declaration//GEN-END:variables
 }

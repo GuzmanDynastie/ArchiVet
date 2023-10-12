@@ -4,7 +4,9 @@
  */
 package ArchiVet.ventana;
 
+import ArchiVet.Admin.AdminUsuario;
 import ArchiVet.Modelo.Usuario;
+import BD.OBD;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Date;
@@ -24,8 +26,9 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
     private java.sql.Date Fecha = new java.sql.Date(longActual);
     private JComponent Barra;
     private Dimension dimBarra;
-    public int IDMASCOTA, IDPROPIETARIO;
-    public String mascota, propietario;
+    public static int IDMASCOTA, IDPROPIETARIO;
+    public static String mascota, propietario;
+    private AdminUsuario adminUsuario;
 
     private void ocultarBarraTitulo() {
         Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
@@ -36,18 +39,19 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
     }
 
     public void mostrarcomponentes() {
-        ventana_historialMedico.jScrollPane3.setVisible(true);
-        ventana_historialMedico.jScrollPane4.setVisible(true);
-        ventana_historialMedico.jScrollPane6.setVisible(true);
-        ventana_historialMedico.Precio.setVisible(true);
-        ventana_historialMedico.lPrecio.setVisible(true);
+        ventana_historialMedico.ScrollMotivo.setVisible(true);
+        ventana_historialMedico.ScrollDiagnostico.setVisible(true);
+        ventana_historialMedico.ScrollReceta.setVisible(true);
+        ventana_historialMedico.ScrollHistorialConsultas.setVisible(true);
+        //ventana_historialMedico.Precio.setVisible(true);
+        //ventana_historialMedico.lPrecio.setVisible(true);
         ventana_historialMedico.agregarconsulta.setVisible(true);
-        ventana_historialMedico.MAS1.setVisible(true);
-        ventana_historialMedico.MAS2.setVisible(true);
+        //ventana_historialMedico.MAS1.setVisible(true);
+        //ventana_historialMedico.MAS2.setVisible(true);
         ventana_historialMedico.historial1.setEnabled(true);
         ventana_historialMedico.cerrar.setVisible(true);
     }
-    
+
     private void limpiar() {
         Motivo.setText("");
         Diagnostico.setText("");
@@ -56,18 +60,22 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
     }
 
     private void subir() {
-        obd.subirConsulta(IDMASCOTA, mascota, Fecha, "Consulta", Float.parseFloat(Precio.getText()), Motivo.getText(), IDPROPIETARIO, usuario.getUsuario());
+        obd.subirConsulta(IDMASCOTA, mascota, Fecha, "Consulta", Float.parseFloat(Precio.getText()), Motivo.getText(), Diagnostico.getText(), Receta.getText(), Peso.getText(), IDPROPIETARIO, adminUsuario.dameListaUsuarios());
         obd.historial(IDMASCOTA, mascota, "Macho", "Consulta", Float.parseFloat(Precio.getText()), Motivo.getText(), IDPROPIETARIO);
-        obd.tablaConsultas(ventana_historialMedico.Previos, mascota);
+        obd.tablaConsultas(ventana_historialMedico.HistorialConsultas, mascota);
+        System.out.println(IDMASCOTA + " - " + IDPROPIETARIO);
         limpiar();
         mostrarcomponentes();
     }
 
-    public ventana_aplicarConsulta() {
+    public ventana_aplicarConsulta(AdminUsuario adminUsuario) {
         initComponents();
+        this.adminUsuario = adminUsuario;
         ocultarBarraTitulo();
         imagen = new ArchiVet.Imagen.imagenes();
         usuario = new Usuario();
+        obd = new OBD();
+        adminUsuario = new AdminUsuario();
         Motivo.setLineWrap(true);
         Diagnostico.setLineWrap(true);
         Receta.setLineWrap(true);
@@ -99,12 +107,16 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
             }
         };
         Precio = new javax.swing.JTextField();
+        Peso = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(1796, 978));
         setMinimumSize(new java.awt.Dimension(1796, 978));
         setPreferredSize(new java.awt.Dimension(1796, 978));
 
+        Fondo.setBackground(new java.awt.Color(47, 69, 56));
+
         lMotivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lMotivo.setForeground(new java.awt.Color(255, 255, 255));
         lMotivo.setText("Motivo de consulta");
 
         Motivo.setColumns(20);
@@ -114,6 +126,7 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(Motivo);
 
         lDiagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lDiagnostico.setForeground(new java.awt.Color(255, 255, 255));
         lDiagnostico.setText("Diagnostico");
 
         Diagnostico.setColumns(20);
@@ -123,6 +136,7 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(Diagnostico);
 
         lReceta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lReceta.setForeground(new java.awt.Color(255, 255, 255));
         lReceta.setText("Receta");
 
         Receta.setColumns(20);
@@ -149,6 +163,8 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
         Precio.setMinimumSize(new java.awt.Dimension(150, 35));
         Precio.setPreferredSize(new java.awt.Dimension(150, 35));
 
+        Peso.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+
         javax.swing.GroupLayout FondoLayout = new javax.swing.GroupLayout(Fondo);
         Fondo.setLayout(FondoLayout);
         FondoLayout.setHorizontalGroup(
@@ -174,13 +190,15 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(FondoLayout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(146, 146, 146))
-                                .addGroup(FondoLayout.createSequentialGroup()
                                     .addGap(104, 104, 104)
                                     .addComponent(lPrecio)
-                                    .addContainerGap()))))))
+                                    .addGap(17, 17, 17))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(Precio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Peso))
+                                    .addGap(146, 146, 146)))))))
         );
         FondoLayout.setVerticalGroup(
             FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,6 +216,8 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
                                 .addComponent(lPrecio)
                                 .addGap(18, 18, 18)
                                 .addComponent(Precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(76, 76, 76)
+                                .addComponent(Peso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -209,7 +229,7 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
                                 .addGap(88, 88, 88))))
                     .addGroup(FondoLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 84, Short.MAX_VALUE)))
+                        .addGap(0, 105, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -238,6 +258,7 @@ public class ventana_aplicarConsulta extends javax.swing.JInternalFrame {
     private javax.swing.JPanel Fondo;
     public static javax.swing.JLabel Guardar;
     private javax.swing.JTextArea Motivo;
+    private javax.swing.JTextField Peso;
     private javax.swing.JTextField Precio;
     private javax.swing.JTextArea Receta;
     private javax.swing.JScrollPane jScrollPane1;
