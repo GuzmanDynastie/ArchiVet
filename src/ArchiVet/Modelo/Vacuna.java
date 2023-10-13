@@ -62,6 +62,8 @@ public class Vacuna {
     public String toString() {
         return "Vacuna{" + "descripcion=" + descripcion + ", lote=" + lote + ", cantidad=" + cantidad + ", precio=" + precio + ", caducidad=" + caducidad + '}';
     }
-    
-    
+
+    public Object[] toArray() {
+        return new Object[]{descripcion, lote, cantidad, precio, caducidad};
+    } 
 }

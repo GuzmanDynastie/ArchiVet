@@ -359,75 +359,75 @@ public class Filtraciones extends DAO {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
 /////////////////////////////////////----------------------------------------------------------------------------------------------- 
     //Busca datos de la tabla mascota y propietadrio    
-    public void Inventario_Vacunas(String Opcion, JTable Tabla) {
-
-        try {
-            Object[] datosUsuario = new Object[7];
-            String[] Titulos = {"DESCRIPCION", "LOTE", "STOCK", "PRECIO UNITARIO", "CADUCIDAD", ""};
-
-            Tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
-            DefaultTableModel model = new DefaultTableModel(null, Titulos) {
-                public boolean isCellEditable(int fila, int columna) {
-                    return false;
-                }
-
-            };
-
-            JButton btn = new JButton("");
-            ImageIcon icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/mas.png"));
-            btn.setIcon(icono);
-            btn.setBounds(0, 0, 50, 35);
-            btn.setName("AGREGAR");
-
-            Tabla.setModel(model);
-            Tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-            Tabla.getColumn("DESCRIPCION").setPreferredWidth(569);
-            Tabla.getColumn("LOTE").setPreferredWidth(470);
-            Tabla.getColumn("STOCK").setPreferredWidth(200);
-            Tabla.getColumn("PRECIO UNITARIO").setPreferredWidth(190);
-            Tabla.getColumn("CADUCIDAD").setPreferredWidth(245);
-            Tabla.getColumn("").setPreferredWidth(40);
-
-            for (int i = 0; i < Tabla.getColumnCount(); i++) {
-                Class<?> columnClass = Tabla.getColumnClass(i);
-                Tabla.setDefaultEditor(columnClass, null);
-            }
-            switch (Opcion) {
-                case "A":
-                    SQL = "SELECT * FROM vacunas";
-                    System.out.println("Imprimiendo Vacunas");
-                    break;
-                case "B":
-                    SQL = "SELECT * FROM desparacitantes";
-                    System.out.println("Imprimiendo Desparacitantes");
-                    break;
-                case "C":
-                    SQL = "SELECT * FROM medicamentos";
-                    System.out.println("Imprimiendo Medicamentos");
-                    break;
-                default:
-                    System.out.println("Error");
-                    break;
-            }
-
-            ResultSet rs = connection.executeQuery(SQL);
-
-            while (rs.next()) {
-
-                datosUsuario[0] = rs.getString(1);
-                datosUsuario[1] = rs.getString(2);
-                datosUsuario[2] = rs.getString(3);
-                datosUsuario[3] = rs.getString(4);
-                datosUsuario[4] = rs.getString(5);
-                datosUsuario[5] = btn;
-
-                model.addRow(datosUsuario);
-
-            }
-        } catch (SQLException e) {
-        }
-    }
+//    public void Inventario_Vacunas(String Opcion, JTable Tabla) {
+//
+//        try {
+//            Object[] datosUsuario = new Object[7];
+//            String[] Titulos = {"DESCRIPCION", "LOTE", "STOCK", "PRECIO UNITARIO", "CADUCIDAD", ""};
+//
+//            Tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
+//            DefaultTableModel model = new DefaultTableModel(null, Titulos) {
+//                public boolean isCellEditable(int fila, int columna) {
+//                    return false;
+//                }
+//
+//            };
+//
+//            JButton btn = new JButton("");
+//            ImageIcon icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/mas.png"));
+//            btn.setIcon(icono);
+//            btn.setBounds(0, 0, 50, 35);
+//            btn.setName("AGREGAR");
+//
+//            Tabla.setModel(model);
+//            Tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//
+//            Tabla.getColumn("DESCRIPCION").setPreferredWidth(569);
+//            Tabla.getColumn("LOTE").setPreferredWidth(470);
+//            Tabla.getColumn("STOCK").setPreferredWidth(200);
+//            Tabla.getColumn("PRECIO UNITARIO").setPreferredWidth(190);
+//            Tabla.getColumn("CADUCIDAD").setPreferredWidth(245);
+//            Tabla.getColumn("").setPreferredWidth(40);
+//
+//            for (int i = 0; i < Tabla.getColumnCount(); i++) {
+//                Class<?> columnClass = Tabla.getColumnClass(i);
+//                Tabla.setDefaultEditor(columnClass, null);
+//            }
+//            switch (Opcion) {
+//                case "A":
+//                    SQL = "SELECT * FROM vacunas";
+//                    System.out.println("Imprimiendo Vacunas");
+//                    break;
+//                case "B":
+//                    SQL = "SELECT * FROM desparacitantes";
+//                    System.out.println("Imprimiendo Desparacitantes");
+//                    break;
+//                case "C":
+//                    SQL = "SELECT * FROM medicamentos";
+//                    System.out.println("Imprimiendo Medicamentos");
+//                    break;
+//                default:
+//                    System.out.println("Error");
+//                    break;
+//            }
+//
+//            ResultSet rs = connection.executeQuery(SQL);
+//
+//            while (rs.next()) {
+//
+//                datosUsuario[0] = rs.getString(1);
+//                datosUsuario[1] = rs.getString(2);
+//                datosUsuario[2] = rs.getString(3);
+//                datosUsuario[3] = rs.getString(4);
+//                datosUsuario[4] = rs.getString(5);
+//                datosUsuario[5] = btn;
+//
+//                model.addRow(datosUsuario);
+//
+//            }
+//        } catch (SQLException e) {
+//        }
+//    }
 /////////////////////////////////////-----------------------------------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 

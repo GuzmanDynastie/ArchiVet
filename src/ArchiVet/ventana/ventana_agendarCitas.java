@@ -190,26 +190,13 @@ public class ventana_agendarCitas extends javax.swing.JInternalFrame implements 
     }
 
     private void opcionAgendarCita(java.awt.event.MouseEvent evt) {
-        Object[] Opciones = {"Registrar Usuario", "Continuar"};
-        Object opcion = JOptionPane.showOptionDialog(null, "Recuerda que para agendar cita el usuario tiene que estar registrado previamente", "Aviso", JOptionPane.YES_NO_OPTION, HEIGHT, frameIcon, Opciones, iconable);
-        try {
-            if (opcion.equals(0)) {
-                Fondo.add(registroMascotaPropietario);
-                registroMascotaPropietario.setVisible(true);
-                registroMascotaPropietario.setLocation(390, 150);
-                this.dispose();
-            } else if (opcion.equals(1)) {
 
-                Fondo.add(registrarCita);
-                registrarCita.setVisible(true);
-                registrarCita.setLocation(0, 0);
-                LabelUPDATE.setVisible(false);
+        Fondo.add(registrarCita);
+        registrarCita.setVisible(true);
+        registrarCita.setLocation(0, 0);
+        LabelUPDATE.setVisible(false);
 
-                this.dispose();
-            }
-        } catch (Exception | Error e) {
-            System.err.println(e.getMessage());
-        }
+        this.dispose();
     }
 
     public void consultarDB_limpiarDatos() {

@@ -44,4 +44,29 @@ public class MySQL_Usuario extends DAO {
             return null;
         }
     }
+    
+    
+//    private final String LOGIN = "SELECT NOMBRE, APELLIDO FROM medicos WHERE USUARIO = ? AND CONTRASEÑA = ? AND ESTADO = 1";
+//
+//public boolean validarCredenciales(Usuario usuario) {
+//    try (PreparedStatement prep = connection.prepareStatement(LOGIN)) {
+//        prep.setString(1, usuario.getUsuario());
+//        prep.setString(2, usuario.getContrasenia());
+//
+//        try (ResultSet rs = prep.executeQuery()) {
+//            if (rs.next()) {
+//                // Los datos de nombre y apellido se encuentran en las columnas 1 y 2 respectivamente
+//                String nombre = rs.getString(1);
+//                String apellido = rs.getString(2);
+//                // Puedes almacenar estos valores en el objeto Usuario o hacer lo que necesites con ellos
+//                usuario.setNombre(nombre);
+//                usuario.setApellido(apellido);
+//                return true;
+//            }
+//        }
+//    } catch (SQLException e) {
+//        System.err.println(e.getMessage());
+//    }
+//    return false;
+//}
 }

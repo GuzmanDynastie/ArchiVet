@@ -2,7 +2,6 @@ package ArchiVet.ventana;
 
 import ArchiVet.Admin.AdminUsuario;
 import ArchiVet.ventana.componente.Creacion_PDF;
-//import Controlador.Filtraciones;
 import Archivet.Controlador.Filtraciones;
 import static ArchiVet.ventana.ventana_puntoVenta.ID_PET;
 import static ArchiVet.ventana.ventana_puntoVenta.NAME_PET;
@@ -16,12 +15,12 @@ import static ArchiVet.ventana.ventana_pagarCaja.Nombre_Mascota_Pagar_Cuenta;
 import static ArchiVet.ventana.ventana_pagarCaja.Total_Pagar_Cuenta;
 import static ArchiVet.ventana.ventana_productos.Tabla_Desparacitantes;
 import static ArchiVet.ventana.ventana_productos.Tabla_Medicamentos;
-import static ArchiVet.ventana.ventana_productos.Tabla_Vacunas;
 import com.lowagie.text.DocumentException;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,9 +34,9 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
 
     static Filtraciones filtraciones = new Filtraciones();
 
-    static Creacion_PDF creacion_pdf = new Creacion_PDF();
-
-    ArchiVet.Imagen.imagenes imagen = new ArchiVet.Imagen.imagenes();
+    
+    private static Creacion_PDF creacion_pdf;
+    private ArchiVet.Imagen.imagenes imagen;
     private AdminUsuario adminUsuario;
 
     public static ArrayList VACUNAS = new ArrayList();
@@ -53,7 +52,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
     private JComponent Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
     private Dimension dimBarra = null;
 
-    public void ocultarBarraTitulo() {
+    private void ocultarBarraTitulo() {
         Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
         dimBarra = Barra.getPreferredSize();
         Barra.setSize(0, 0);
@@ -61,7 +60,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         repaint();
     }
 
-    public void volver() {
+    private void volver() {
         try {
             Filtraciones.UPDATE_VACUNAS(STOCK, LOTE);
             Filtraciones.UPDATE_MEDICAMENTOS(STOCK, LOTE);
@@ -87,6 +86,8 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
     public ventana_mostradorCaja(AdminUsuario adminUsuario) {
 
         initComponents();
+        imagen = new ArchiVet.Imagen.imagenes();
+        creacion_pdf = new Creacion_PDF();
         ocultarBarraTitulo();
         Buscador_Mascota.setEditable(false);
         this.adminUsuario = adminUsuario;
@@ -881,6 +882,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         try {
             creacion_pdf.PDF_Historial(TFecha, TFolio, TPropietario, TMascota, TDescripcion, TCargo);
         } catch (FileNotFoundException | DocumentException | NumberFormatException ex) {
+            System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -996,14 +998,18 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Pago3ActionPerformed
 
     private void Agregar_otrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Agregar_otrosMouseClicked
-        ventana_productos productos = new ventana_productos();
-        Fondo.add(productos);
-        this.setVisible(false);
-        productos.setVisible(true);
-        productos.setLocation(0, 0);
-        filtraciones.Inventario_Vacunas("A", Tabla_Vacunas);
-        filtraciones.Inventario_Vacunas("B", Tabla_Desparacitantes);
-        filtraciones.Inventario_Vacunas("C", Tabla_Medicamentos);
+        try {
+            ventana_productos productos = new ventana_productos();
+            Fondo.add(productos);
+            this.setVisible(false);
+            productos.setVisible(true);
+            productos.setLocation(0, 0);
+            //filtraciones.Inventario_Vacunas("A", Tabla_Vacunas);
+            //filtraciones.Inventario_Vacunas("B", Tabla_Desparacitantes);
+            //filtraciones.Inventario_Vacunas("C", Tabla_Medicamentos);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }//GEN-LAST:event_Agregar_otrosMouseClicked
 
     private void Tabla_PRODUCTOS_ADDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Tabla_PRODUCTOS_ADDFocusLost
