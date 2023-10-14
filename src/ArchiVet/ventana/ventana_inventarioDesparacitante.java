@@ -1,14 +1,17 @@
 package ArchiVet.ventana;
 
+import ArchiVet.Admin.AdminDesparacitante;
+import ArchiVet.Modelo.Desparacitante;
 import java.awt.Graphics;
 import javax.swing.JOptionPane;
 
 public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
 
-    BD.OBD obd = new BD.OBD();
-    ArchiVet.Imagen.imagenes imagen = new ArchiVet.Imagen.imagenes();
+    private Desparacitante desparacitante;
+    private AdminDesparacitante adminDesparacitante;
+    private ArchiVet.Imagen.imagenes imagen;
 
-    public void Limpiar() {
+    private void Limpiar() {
         Descripcion.setText("");
         Lote.setText("");
         Cantidad.setText("");
@@ -16,12 +19,14 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
         Caducidad.getCalendar();
     }
 
-    public void verificar() {
+    private void verificar() {
         if (!(Descripcion.getText().isEmpty() || Lote.getText().isEmpty() || Cantidad.getText().isEmpty() || Precio.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
             java.sql.Date fech = new java.sql.Date(fec);
-            obd.desparacitantes(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
+            
+            desparacitante = new Desparacitante(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
+            adminDesparacitante.insertarDesparacitante(desparacitante);
             Limpiar();
         } else {
             JOptionPane.showMessageDialog(null, "No se ha guardado\nVerifique los campos", "Error", JOptionPane.DEFAULT_OPTION);
@@ -30,6 +35,8 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
 
     public ventana_inventarioDesparacitante() {
         initComponents();
+        adminDesparacitante = new AdminDesparacitante();
+        imagen = new ArchiVet.Imagen.imagenes();
     }
 
     @SuppressWarnings("unchecked")
@@ -229,8 +236,8 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
         try {
             Limpiar();
             this.dispose();
-        } catch (Exception exception) {
-
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_Cerrar1MouseClicked
 

@@ -2,7 +2,6 @@ package ArchiVet.ventana;
 
 import ArchiVet.Admin.AdminUsuario;
 import ArchiVet.Modelo.Usuario;
-import ArchiVet.ventana.componente.FondoBotones;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JOptionPane;
@@ -39,6 +38,7 @@ public class ventana_iniciarSesion extends javax.swing.JFrame {
 
     public ventana_iniciarSesion() {
         initComponents();
+
         adminUsuario = new AdminUsuario();
         imagen = new ArchiVet.Imagen.imagenes();
         inicio = new ventana_menu(adminUsuario);

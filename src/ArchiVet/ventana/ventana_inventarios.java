@@ -1,49 +1,36 @@
 package ArchiVet.ventana;
 
+import ArchiVet.Admin.AdminDesparacitante;
+import ArchiVet.Admin.AdminMedicamento;
+import ArchiVet.Admin.AdminVacuna;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import ArchiVet.ventana.ventana_menu;
-import ArchiVet.ventana.ventana_inventarioVacuna;
-import ArchiVet.ventana.ventana_inventarioDesparacitante;
-import ArchiVet.ventana.ventana_inventarioMedicamento;
 import static ArchiVet.ventana.ventana_menu.panel;
 import java.awt.Graphics;
+import java.sql.SQLException;
 
 public class ventana_inventarios extends javax.swing.JInternalFrame {
 
-    BD.OBD obd = new BD.OBD();
+    private AdminVacuna adminVacuna;
+    private AdminDesparacitante adminDesparacitante;
+    private AdminMedicamento adminMedicamento;
     private ArchiVet.Imagen.imagenes imagen;
 
-    void CargarTablaVacuna() {
-        DefaultTableModel mode = (DefaultTableModel) Tabla_Vacunas.getModel();
-        mode.setRowCount(0);
-        obd.tablaVacunas(Tabla_Vacunas, mode);
-    }
-
-    void CargarTablaDespa() {
-        DefaultTableModel mode = (DefaultTableModel) Tabla_Desparacitantes.getModel();
-        mode.setRowCount(0);
-        obd.tablaDesparacitantes(Tabla_Desparacitantes, mode);
-    }
-
-    void CargarTablaMedi() {
-        DefaultTableModel mode = (DefaultTableModel) Tabla_Medicamentos.getModel();
-        mode.setRowCount(0);
-        obd.tablaMedicamentos(Tabla_Medicamentos, mode);
-    }
-
-    public ventana_inventarios() {
+    public ventana_inventarios() throws SQLException {
         initComponents();
         imagen = new ArchiVet.Imagen.imagenes();
+        adminVacuna = new AdminVacuna();
+        adminDesparacitante = new AdminDesparacitante();
+        adminMedicamento = new AdminMedicamento();
         iconoAgregar.setToolTipText("AGREGAR");
         iconoAgregar1.setToolTipText("AGREGAR");
         iconoAgregar2.setToolTipText("AGREGAR");
-        CargarTablaVacuna();
-        CargarTablaDespa();
-        CargarTablaMedi();
+
+        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
+        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
+        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
 
         Font myFont2 = new Font("Arial", Font.CENTER_BASELINE, 20);
         Inventarios.setFont(myFont2);
@@ -99,7 +86,7 @@ public class ventana_inventarios extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(215, 208, 183));
 
-        iconoInventario.setPreferredSize(new java.awt.Dimension(50, 50));
+        iconoInventario.setPreferredSize(new java.awt.Dimension(75, 75));
 
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 0, 30)); // NOI18N
         jLabel1.setText("Inventario");
@@ -120,22 +107,20 @@ public class ventana_inventarios extends javax.swing.JInternalFrame {
                 .addComponent(iconoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(827, 827, 827)
+                .addGap(826, 826, 826)
                 .addComponent(icono_cerrarVentana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addGap(17, 17, 17))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(icono_cerrarVentana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(iconoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(iconoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(icono_cerrarVentana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -436,29 +421,27 @@ public class ventana_inventarios extends javax.swing.JInternalFrame {
 
     private void iconoAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconoAgregarMouseClicked
         ventana_inventarioVacuna interVac = new ventana_inventarioVacuna();
-        //Tabla_Vacunas.add(interVac);
-        //interVac.setLocation(500, 200);
         interVac.setVisible(true);
     }//GEN-LAST:event_iconoAgregarMouseClicked
 
     private void iconoAgregar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconoAgregar1MouseClicked
         ventana_inventarioDesparacitante invDes = new ventana_inventarioDesparacitante();
-        //jPanel6.add(invDes);
-        //invDes.setLocation(500, 200);
         invDes.setVisible(true);
     }//GEN-LAST:event_iconoAgregar1MouseClicked
 
     private void iconoAgregar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconoAgregar2MouseClicked
         ventana_inventarioMedicamento invMed = new ventana_inventarioMedicamento();
-        //Tabla_Medicamentos.add(invMed);
-        //invMed.setLocation(500, 200);
         invMed.setVisible(true);
     }//GEN-LAST:event_iconoAgregar2MouseClicked
 
     private void InventariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventariosMouseClicked
-        CargarTablaVacuna();
-        CargarTablaDespa();
-        CargarTablaMedi();
+        try {
+            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
+            adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
+            adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }//GEN-LAST:event_InventariosMouseClicked
 
 

@@ -14,65 +14,6 @@ public class OBD extends DAO {
     public static Object[] datos = new Object[25];
     public static String sSQL;
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////              Medicamentos                //////////////////////////////////////////////////
-    public void tablaMedicamentos(JTable tabla, DefaultTableModel mode) {
-        sSQL = "SELECT * FROM medicamentos";
-        try {
-            ResultSet rs = connection.executeQuery(sSQL);
-            while (rs.next()) {
-                datos[0] = rs.getString("Descripcion");
-                datos[1] = rs.getString("Lote");
-                datos[2] = rs.getInt("Cantidad");
-                datos[3] = rs.getDouble("Precio");
-                datos[4] = rs.getDate("Caducidad");
-                mode.addRow(datos);
-                tabla.setModel(mode);
-            }
-        } catch (SQLException ex) {
-            System.out.println("ERROR\n" + ex);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////                  Vacunas                 //////////////////////////////////////////////////
-    public void tablaVacunas(JTable tabla, DefaultTableModel mode) {
-        sSQL = "SELECT * FROM vacunas";
-        try {
-            ResultSet rs = connection.executeQuery(sSQL);
-            while (rs.next()) {
-                datos[0] = rs.getString("Descripcion");
-                datos[1] = rs.getString("Lote");
-                datos[2] = rs.getInt("Cantidad");
-                datos[3] = rs.getDouble("Precio");
-                datos[4] = rs.getDate("Caducidad");
-                mode.addRow(datos);
-                tabla.setModel(mode);
-            }
-        } catch (SQLException ex) {
-            System.out.println("ERROR\n" + ex);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////              Desparacitantes             //////////////////////////////////////////////////
-    public void tablaDesparacitantes(JTable tabla, DefaultTableModel mode) {
-        sSQL = "SELECT * FROM desparacitantes";
-        try {
-            ResultSet rs = connection.executeQuery(sSQL);
-            while (rs.next()) {
-                datos[0] = rs.getString("Descripcion");
-                datos[1] = rs.getString("Lote");
-                datos[2] = rs.getInt("Cantidad");
-                datos[3] = rs.getDouble("Precio");
-                datos[4] = rs.getDate("Caducidad");
-                mode.addRow(datos);
-                tabla.setModel(mode);
-            }
-        } catch (SQLException ex) {
-            System.out.println("ERROR\n" + ex);
-        }
-    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////              ComboBox                    //////////////////////////////////////////////////
@@ -140,73 +81,6 @@ public class OBD extends DAO {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////                  Inventario                  //////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////              Medicamentos                //////////////////////////////////////////////////
-    public void medicamentos(String des, String lote, int can, Double pre, java.sql.Date cadu) {
-        sSQL = "INSERT INTO medicamentos(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?,?,?,?,?)";
-        try {
-            PreparedStatement pst = connection.prepare(sSQL);
-            pst.setString(1, des);
-            pst.setString(2, lote);
-            pst.setInt(3, can);
-            pst.setDouble(4, pre);
-            pst.setDate(5, cadu);
-            int n = pst.executeUpdate();
-            if (n > 0) {
-                System.out.println("Registro realizado");
-            } else {
-                System.out.println("Registro negado");
-            }
-        } catch (SQLException ex) {
-            System.out.println("error\n" + ex);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////                      Vacunas                 //////////////////////////////////////////////////
-    public void vacunas(String des, String lote, int can, Double pre, java.sql.Date cadu) {
-        sSQL = "INSERT INTO vacunas(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?,?,?,?,?)";
-        try {
-            PreparedStatement pst = connection.prepare(sSQL);
-            pst.setString(1, des);
-            pst.setString(2, lote);
-            pst.setInt(3, can);
-            pst.setDouble(4, pre);
-            pst.setDate(5, cadu);
-            int n = pst.executeUpdate();
-            if (n > 0) {
-                System.out.println("Registro realizado");
-            } else {
-                System.out.println("Registro negado");
-            }
-        } catch (SQLException ex) {
-            System.out.println("error\n" + ex);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////              Desparacitantes             //////////////////////////////////////////////////
-    public void desparacitantes(String des, String lote, int can, Double pre, java.sql.Date cadu) {
-        sSQL = "INSERT INTO desparacitantes(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?,?,?,?,?)";
-        try {
-            PreparedStatement pst = connection.prepare(sSQL);
-            pst.setString(1, des);
-            pst.setString(2, lote);
-            pst.setInt(3, can);
-            pst.setDouble(4, pre);
-            pst.setDate(5, cadu);
-            int n = pst.executeUpdate();
-            if (n > 0) {
-                System.out.println("Registro realizado");
-            } else {
-                System.out.println("Registro negado");
-            }
-        } catch (SQLException ex) {
-            System.out.println("error\n" + ex);
-        }
-    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////             Historial Medico               //////////////////////////////////////////////////

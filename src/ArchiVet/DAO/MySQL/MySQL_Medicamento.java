@@ -13,12 +13,14 @@ public class MySQL_Medicamento extends DAO {
     
     private final SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     private final String fechaFormato = formatoFecha.format(new java.util.Date());
-    
+
+    private static final String COMPARAR = "SELECT * FROM medicamentos WHERE Descripcion = ? AND Lote = ? AND Precio = ? AND Caducidad = ?";
+    private static final String UPDATE_INSERT = "UPDATE medicamentos SET Cantidad = Cantidad + ? WHERE Id = ?";
     private static final String INSERT = "INSERT INTO medicamentos(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?, ?, ?, ?, ?)";
     private static final String GET_ALL = "WITH CTE AS (SELECT Descripcion, Lote, Cantidad, Precio, Caducidad, ROW_NUMBER() OVER (PARTITION BY Descripcion ORDER BY Caducidad) "
             + "AS RowNum FROM medicamentos WHERE Cantidad > 0 AND Caducidad >= ?) SELECT Descripcion, Lote, Cantidad, Precio, Caducidad FROM CTE WHERE RowNum = 1";
     public static final String[] CAMPOS_TABLA = {"DESCRIPCION", "LOTE", "STOCK", "PRECIO UNITARIO", "CADUCIDAD", ""};
-    
+
     private void completarPrepareStatement(Medicamento medicamento, PreparedStatement prep) throws SQLException {
         prep.setString(1, medicamento.getDescripcion());
         prep.setString(2, medicamento.getLote());
@@ -26,19 +28,34 @@ public class MySQL_Medicamento extends DAO {
         prep.setDouble(4, medicamento.getPrecio());
         prep.setDate(5, (Date) medicamento.getCaducidad());
     }
-
+    
     public boolean insertarMedicamento(Medicamento medicamento) {
-        boolean resultado = false;
-        try {
-            PreparedStatement prep = connection.prepare(INSERT);
-            completarPrepareStatement(medicamento, prep);
-            resultado = prep.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
+    boolean resultado = false;
+    try {
+        // Buscar una fila que coincida con los valores ingresados por el usuario
+        PreparedStatement prepSelect = connection.prepare(COMPARAR);
+        prepSelect.setString(1, medicamento.getDescripcion());
+        prepSelect.setString(2, medicamento.getLote());
+        prepSelect.setDouble(3, medicamento.getPrecio());
+        prepSelect.setDate(4, (Date) medicamento.getCaducidad());
+        ResultSet rs = prepSelect.executeQuery();
+        if (rs.next()) {
+            // Si se encuentra una fila que coincide, actualizar la cantidad sumándole la nueva cantidad ingresada por el usuario
+            PreparedStatement prepUpdate = connection.prepare(UPDATE_INSERT);
+            prepUpdate.setInt(1, medicamento.getCantidad());
+            prepUpdate.setInt(2, rs.getInt("Id"));
+            resultado = prepUpdate.executeUpdate() > 0;
+        } else {
+            // Si no se encuentra una fila que coincide, insertar una nueva fila con los datos ingresados por el usuario
+            PreparedStatement prepInsert = connection.prepare(INSERT);
+            completarPrepareStatement(medicamento, prepInsert);
+            resultado = prepInsert.executeUpdate() > 0;
         }
-        return resultado;
+    } catch (SQLException e) {
+        System.err.println(e.getMessage());
     }
+    return resultado;
+}
     
     public Medicamento[] listarMedicamentos() throws SQLException {
         ArrayList<Medicamento> lista = new ArrayList<>();

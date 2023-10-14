@@ -5,6 +5,7 @@ import ArchiVet.ventana.componente.FondoBotones;
 import java.awt.Color;
 import java.awt.Graphics;
 import ArchiVet.ventana.componente.RoundedBorder;
+import java.sql.SQLException;
 
 public class ventana_menu extends javax.swing.JFrame {
 
@@ -48,8 +49,9 @@ public class ventana_menu extends javax.swing.JFrame {
         cerrar.setToolTipText("Cerrar");
     }
 
-    public ventana_menu(AdminUsuario adminUsuario) {
+    public ventana_menu(AdminUsuario adminUsuario) throws SQLException {
         initComponents();
+        
         FondoBotones.setOpaque(false);
         this.adminUsuario = adminUsuario;
         panel = new FondoBotones();
@@ -315,7 +317,7 @@ public class ventana_menu extends javax.swing.JFrame {
     private javax.swing.JLabel caja;
     private javax.swing.JLabel calen;
     public static javax.swing.JLabel cerrar;
-    private javax.swing.JLabel ingresoMascota;
+    public static javax.swing.JLabel ingresoMascota;
     private javax.swing.JLabel ingresoMedicos;
     private javax.swing.JLabel inventario;
     // End of variables declaration//GEN-END:variables

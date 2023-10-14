@@ -1,7 +1,6 @@
 package Archivet.Controlador;
 
 import ArchiVet.DAO.DAO;
-import ArchiVet.ventana.componente.Render_Button_JTable;
 import static ArchiVet.ventana.ventana_pagarCaja.ID_DELETE_HISTORIAL;
 import static ArchiVet.ventana.ventana_mostradorCaja.Contador_Servicio;
 import static ArchiVet.ventana.ventana_consultaEntreFechas.Tabla_Consulta_Fechas;
@@ -14,8 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import static ArchiVet.ventana.ventana_mostradorCaja.sexoMascota;
 import static ArchiVet.ventana.ventana_mostradorCaja.Tabla_Venta_Extras;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 public class Filtraciones extends DAO {

@@ -13,8 +13,6 @@ import static ArchiVet.ventana.ventana_pagarCaja.Descripcion_Pagar_Cuenta;
 import static ArchiVet.ventana.ventana_pagarCaja.Hora_Fecha;
 import static ArchiVet.ventana.ventana_pagarCaja.Nombre_Mascota_Pagar_Cuenta;
 import static ArchiVet.ventana.ventana_pagarCaja.Total_Pagar_Cuenta;
-import static ArchiVet.ventana.ventana_productos.Tabla_Desparacitantes;
-import static ArchiVet.ventana.ventana_productos.Tabla_Medicamentos;
 import com.lowagie.text.DocumentException;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,7 +20,6 @@ import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -32,16 +29,14 @@ import javax.swing.table.DefaultTableModel;
 
 public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
 
-    static Filtraciones filtraciones = new Filtraciones();
-
-    
+    private static Filtraciones filtraciones;
     private static Creacion_PDF creacion_pdf;
     private ArchiVet.Imagen.imagenes imagen;
     private AdminUsuario adminUsuario;
 
-    public static ArrayList VACUNAS = new ArrayList();
-    public static ArrayList MEDICAMENTOS = new ArrayList();
-    public static ArrayList DESPARACITANTES = new ArrayList();
+    //public static ArrayList VACUNAS = new ArrayList();
+    //public static ArrayList MEDICAMENTOS = new ArrayList();
+    //public static ArrayList DESPARACITANTES = new ArrayList();
 
     public static int Seleccion, Contador_Servicio, STOCK;
     public static String TFolio, TMascota, TPropietario, TDescripcion, TFecha, TCargo, LOTE;
@@ -88,6 +83,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         initComponents();
         imagen = new ArchiVet.Imagen.imagenes();
         creacion_pdf = new Creacion_PDF();
+        filtraciones = new Filtraciones();
         ocultarBarraTitulo();
         Buscador_Mascota.setEditable(false);
         this.adminUsuario = adminUsuario;
@@ -340,6 +336,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(Tabla_Venta_Extras);
+        Tabla_Venta_Extras.getAccessibleContext().setAccessibleName("");
 
         Descripcion_Area.setEditable(false);
         Descripcion_Area.setColumns(20);
@@ -489,7 +486,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
                             .addComponent(Pagar_Cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(Panel_CuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Total_Cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PAGO, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -667,25 +664,22 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
             .addGroup(Panel_HistorialLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addGroup(Panel_HistorialLayout.createSequentialGroup()
                         .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Pago2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(Panel_HistorialLayout.createSequentialGroup()
                                 .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Pago2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(Panel_HistorialLayout.createSequentialGroup()
-                                        .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(Panel_HistorialLayout.createSequentialGroup()
-                                                .addGap(12, 12, 12)
-                                                .addComponent(Usuario2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(Historial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(Pago4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Nombre_Usuario_Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
+                                        .addGap(12, 12, 12)
+                                        .addComponent(Usuario2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(Historial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Pago4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Nombre_Usuario_Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(Panel_HistorialLayout.createSequentialGroup()
                         .addGap(442, 442, 442)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -695,9 +689,9 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Buscador_Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 493, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 501, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
             .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jSeparator19, javax.swing.GroupLayout.DEFAULT_SIZE, 1839, Short.MAX_VALUE))
             .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -710,15 +704,15 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
                 .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Usuario2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Nombre_Usuario_Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(14, 14, 14)
+                .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(Buscador_Fecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                         .addComponent(Buscador_Mascota, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(Panel_HistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Historial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Pago4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -804,11 +798,10 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         if (TO <= 0) {
             JOptionPane.showMessageDialog(null, "No es posible acceder a pagar, este \ncliente no tiene adeudo", "AVISO", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            ventana_pagarCaja P;
-            P = new ventana_pagarCaja();
-            Fondo.add(P);
-            P.setVisible(true);
-            P.setLocation(0, 0);
+            ventana_pagarCaja pagarCaja = new ventana_pagarCaja();
+            Fondo.add(pagarCaja);
+            pagarCaja.setVisible(true);
+            pagarCaja.setLocation(0, 0);
             ventana_pagarCaja.Nombre_Usuario_Pagar_Cuenta.setText(Nombre_Seleccionado.getText().trim());
             Filtraciones.cargarNombre_Mascota(NumeroID, ID_PET, Nombre_Mascota_Pagar_Cuenta, Total_Pagar_Cuenta);
             Total_Pagar_Cuenta.setText(Total_Cuenta.getText());
@@ -1004,9 +997,6 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
             this.setVisible(false);
             productos.setVisible(true);
             productos.setLocation(0, 0);
-            //filtraciones.Inventario_Vacunas("A", Tabla_Vacunas);
-            //filtraciones.Inventario_Vacunas("B", Tabla_Desparacitantes);
-            //filtraciones.Inventario_Vacunas("C", Tabla_Medicamentos);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
