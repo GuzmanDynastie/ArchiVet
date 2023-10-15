@@ -28,9 +28,9 @@ public class ventana_inventarios extends javax.swing.JInternalFrame {
         iconoAgregar1.setToolTipText("AGREGAR");
         iconoAgregar2.setToolTipText("AGREGAR");
 
-        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
-        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
-        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
+        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Inventario");
+        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Inventario");
+        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Inventario");
 
         Font myFont2 = new Font("Arial", Font.CENTER_BASELINE, 20);
         Inventarios.setFont(myFont2);
@@ -436,9 +436,9 @@ public class ventana_inventarios extends javax.swing.JInternalFrame {
 
     private void InventariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventariosMouseClicked
         try {
-            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
-            adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
-            adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
+            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Inventario");
+            adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Inventario");
+            adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Inventario");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

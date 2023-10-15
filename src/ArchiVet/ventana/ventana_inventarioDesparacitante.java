@@ -2,7 +2,9 @@ package ArchiVet.ventana;
 
 import ArchiVet.Admin.AdminDesparacitante;
 import ArchiVet.Modelo.Desparacitante;
+import static ArchiVet.ventana.ventana_inventarios.Tabla_Desparacitantes;
 import java.awt.Graphics;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
@@ -19,7 +21,7 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
         Caducidad.getCalendar();
     }
 
-    private void verificar() {
+    private void verificar() throws SQLException {
         if (!(Descripcion.getText().isEmpty() || Lote.getText().isEmpty() || Cantidad.getText().isEmpty() || Precio.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
@@ -28,6 +30,8 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
             desparacitante = new Desparacitante(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
             adminDesparacitante.insertarDesparacitante(desparacitante);
             Limpiar();
+            adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Inventario");
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "No se ha guardado\nVerifique los campos", "Error", JOptionPane.DEFAULT_OPTION);
         }
@@ -242,7 +246,11 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
     }//GEN-LAST:event_Cerrar1MouseClicked
 
     private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
-        verificar();
+        try {
+            verificar();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
         System.out.println("Guardar");
     }//GEN-LAST:event_GuardarMouseClicked
 

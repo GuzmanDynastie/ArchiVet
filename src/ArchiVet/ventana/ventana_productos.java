@@ -76,9 +76,9 @@ public class ventana_productos extends javax.swing.JInternalFrame {
         adminVacuna = new AdminVacuna();
         adminDesparacitante = new AdminDesparacitante();
         adminMedicamento = new AdminMedicamento();
-        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
-        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
-        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
+        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Productos");
+        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Productos");
+        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Productos");
         ocultarBarraTitulo();
 
         Font myFont2 = new Font("Arial", Font.CENTER_BASELINE, 20);
@@ -473,7 +473,7 @@ public class ventana_productos extends javax.swing.JInternalFrame {
                         Filtraciones.UPDATE_VACUNAS((stock - Pieza), Compra[1].toString());
                         try {
                             //filtraciones.Inventario_Vacunas("A", Tabla_Vacunas);
-                            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas);
+                            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Productos");
                         } catch (SQLException ex) {
                             System.err.println(ex.getMessage());
                         }
@@ -606,7 +606,7 @@ public class ventana_productos extends javax.swing.JInternalFrame {
                         
                     try {
                         //filtraciones.Inventario_Vacunas("B", Tabla_Desparacitantes);
-                        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes);
+                        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Productos");
                     } catch (SQLException ex) {
                         System.err.println(ex.getMessage());
                     }  
@@ -732,7 +732,7 @@ public class ventana_productos extends javax.swing.JInternalFrame {
                     Filtraciones.UPDATE_MEDICAMENTOS((stock - Pieza), Compra[1].toString());
                     try {
                         //filtraciones.Inventario_Vacunas("C", Tabla_Medicamentos);
-                        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos);
+                        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Productos");
                     } catch (SQLException ex) {
                         System.err.println(ex.getMessage());
                     }

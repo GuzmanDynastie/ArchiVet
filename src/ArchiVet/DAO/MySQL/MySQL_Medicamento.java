@@ -17,8 +17,9 @@ public class MySQL_Medicamento extends DAO {
     private static final String COMPARAR = "SELECT * FROM medicamentos WHERE Descripcion = ? AND Lote = ? AND Precio = ? AND Caducidad = ?";
     private static final String UPDATE_INSERT = "UPDATE medicamentos SET Cantidad = Cantidad + ? WHERE Id = ?";
     private static final String INSERT = "INSERT INTO medicamentos(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?, ?, ?, ?, ?)";
-    private static final String GET_ALL = "WITH CTE AS (SELECT Descripcion, Lote, Cantidad, Precio, Caducidad, ROW_NUMBER() OVER (PARTITION BY Descripcion ORDER BY Caducidad) "
+    private static final String GET_ALL_VALIDATION = "WITH CTE AS (SELECT Descripcion, Lote, Cantidad, Precio, Caducidad, ROW_NUMBER() OVER (PARTITION BY Descripcion ORDER BY Caducidad) "
             + "AS RowNum FROM medicamentos WHERE Cantidad > 0 AND Caducidad >= ?) SELECT Descripcion, Lote, Cantidad, Precio, Caducidad FROM CTE WHERE RowNum = 1";
+    private static final String GET_ALL = "SELECT * FROM medicamentos WHERE Caducidad >= ?";
     public static final String[] CAMPOS_TABLA = {"DESCRIPCION", "LOTE", "STOCK", "PRECIO UNITARIO", "CADUCIDAD", ""};
 
     private void completarPrepareStatement(Medicamento medicamento, PreparedStatement prep) throws SQLException {
@@ -58,6 +59,24 @@ public class MySQL_Medicamento extends DAO {
 }
     
     public Medicamento[] listarMedicamentos() throws SQLException {
+        ArrayList<Medicamento> lista = new ArrayList<>();
+        
+        PreparedStatement prep = connection.prepare(GET_ALL_VALIDATION);
+        prep.setString(1, fechaFormato);
+        
+        try {
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                lista.add(new Medicamento(rs.getString("Descripcion"), rs.getString("Lote"), rs.getInt("Cantidad"), 
+                        rs.getDouble("Precio"), rs.getDate("Caducidad")));
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return lista.toArray(Medicamento[]::new);
+    }
+    
+    public Medicamento[] listarMedicamentosInventario() throws SQLException {
         ArrayList<Medicamento> lista = new ArrayList<>();
         
         PreparedStatement prep = connection.prepare(GET_ALL);

@@ -48,12 +48,34 @@ public class AdminDesparacitante {
     public Desparacitante[] obtenerDesparacitantes() throws SQLException {
         return dao.listarDesparacitantes();
     }
+    
+    public Object[][] obtenerDesparacitantesInventarioArray() throws SQLException {
+        Desparacitante[] desparacitante = obtenerDesparacitantesInventario();
+        Object[][] data = new Object[desparacitante.length][];
+        for (int i = 0, len = desparacitante.length; i < len; i++) {
+            data[i] = desparacitante[i].toArray();
+        }
+        return data;
+    }
+    
+    public Desparacitante[] obtenerDesparacitantesInventario() throws SQLException {
+        return dao.listarDesparacitantesInventario();
+    }
 
-    public DefaultTableModel obtenerModeloTablaDesparacitantes(JTable tabla) throws SQLException {
-        Object[][] data = obtenerDesparacitantesArray();
+    public DefaultTableModel obtenerModeloTablaDesparacitantes(JTable tabla, String opcion) throws SQLException {
+        Object[][] data = null;
         String[] columnNames = MySQL_Desparacitante.CAMPOS_TABLA;
         int[] columnWidths = {569, 470, 200, 190, 245, 40};
 
+        switch (opcion) {
+            case "Productos":
+                data = obtenerDesparacitantesArray();
+                break;
+            case "Inventario":
+                data = obtenerDesparacitantesInventarioArray();
+                break;
+        }
+        
         tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
         DefaultTableModel modeloTabla = new DefaultTableModel(data, columnNames) {
             @Override

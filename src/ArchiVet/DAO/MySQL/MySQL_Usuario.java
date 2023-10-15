@@ -2,9 +2,11 @@ package ArchiVet.DAO.MySQL;
 
 import ArchiVet.DAO.DAO;
 import ArchiVet.Modelo.Usuario;
+import ArchiVet.ventana.ventana_iniciarSesion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MySQL_Usuario extends DAO {
 
@@ -28,21 +30,20 @@ public class MySQL_Usuario extends DAO {
         return false;
     }
     
-    public Usuario obtenerNombreUsuario(String usuario) throws SQLException {
+    public Usuario[] obtenerNombreUsuario() throws SQLException {
         
+        ArrayList<Usuario> lista = new ArrayList();
         PreparedStatement prep = connection.prepare(GET_NOMBRE_COMPLETO);
-        prep.setString(0, usuario);
+        prep.setString(1, ventana_iniciarSesion.nombreUsuario.get(0).toString());
         try (ResultSet rs = prep.executeQuery()) {
             if (rs.next()) {
-
-                return new Usuario(rs.getString("NOMBRE"), rs.getString("APELLIDO"));
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
+                lista.add(new Usuario(rs.getString("NOMBRE") + " " + rs.getString("APELLIDO")));
+        } 
+            
+        }catch(SQLException e) {
             System.err.println(e.getMessage());
-            return null;
         }
+        return lista.toArray(Usuario[]::new);
     }
     
     

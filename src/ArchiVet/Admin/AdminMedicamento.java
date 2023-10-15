@@ -48,12 +48,34 @@ public class AdminMedicamento {
     public Medicamento[] obtenerMedicamentos() throws SQLException {
         return dao.listarMedicamentos();
     }
+    
+    public Object[][] obtenerMedicamentosInventarioArray() throws SQLException {
+        Medicamento[] medicamento = obtenerMedicamentosInventario();
+        Object[][] data = new Object[medicamento.length][];
+        for (int i = 0, len = medicamento.length; i < len; i++) {
+            data[i] = medicamento[i].toArray();
+        }
+        return data;
+    }
+    
+    public Medicamento[] obtenerMedicamentosInventario() throws SQLException {
+        return dao.listarMedicamentosInventario();
+    }
 
-    public DefaultTableModel obtenerModeloTablaMedicamentos(JTable tabla) throws SQLException {
-        Object[][] data = obtenerMedicamentosArray();
+    public DefaultTableModel obtenerModeloTablaMedicamentos(JTable tabla, String opcion) throws SQLException {
+        Object[][] data = null;
         String[] columnNames = MySQL_Medicamento.CAMPOS_TABLA;
         int[] columnWidths = {569, 470, 200, 190, 245, 40};
 
+        switch(opcion) {
+            case "Productos":
+                data = obtenerMedicamentosArray();
+                break;
+            case "Inventario":
+                data = obtenerMedicamentosInventarioArray();
+                break;
+        }
+        
         tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
         DefaultTableModel modeloTabla = new DefaultTableModel(data, columnNames) {
             @Override

@@ -4,10 +4,13 @@ import ArchiVet.Admin.AdminUsuario;
 import ArchiVet.Modelo.Usuario;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class ventana_iniciarSesion extends javax.swing.JFrame {
 
+    public static ArrayList nombreUsuario = new ArrayList();
     private AdminUsuario adminUsuario;
     private ArchiVet.Imagen.imagenes imagen;
     private ventana_menu inicio;
@@ -25,8 +28,9 @@ public class ventana_iniciarSesion extends javax.swing.JFrame {
         if (usuario.isEmpty() || contrasenia.isBlank()) {
             JOptionPane.showMessageDialog(null, "Ingrese los datos de manera correcta");
         } else if (adminUsuario.ingresarDataBase(new Usuario(usuario, contrasenia))) {
-            adminUsuario.agregarUsuario(usuario);
-
+            nombreUsuario.add(usuario);
+            //adminUsuario.agregarUsuario(usuario);
+            
             JOptionPane.showMessageDialog(null, "Bienvenido");
             LimLog();
             inicio.setEnabled(true);
@@ -36,7 +40,7 @@ public class ventana_iniciarSesion extends javax.swing.JFrame {
         }
     }
 
-    public ventana_iniciarSesion() {
+    public ventana_iniciarSesion() throws SQLException {
         initComponents();
 
         adminUsuario = new AdminUsuario();
@@ -293,7 +297,11 @@ public class ventana_iniciarSesion extends javax.swing.JFrame {
         /* Create and display the form  */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ventana_iniciarSesion().setVisible(true);
+                try {
+                    new ventana_iniciarSesion().setVisible(true);
+                } catch (SQLException ex) {
+                    System.err.println(ex.getMessage());
+                }
             }
         });
     }

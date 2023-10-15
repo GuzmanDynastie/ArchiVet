@@ -48,11 +48,33 @@ public class AdminVacuna {
     public Vacuna[] obtenerVacunas() throws SQLException {
         return dao.listarVacunas();
     }
+    
+    public Object[][] obtenerVacunasInventarioArray() throws SQLException {
+        Vacuna[] medico = obtenerVacunasInventarios();
+        Object[][] data = new Object[medico.length][];
+        for (int i = 0, len = medico.length; i < len; i++) {
+            data[i] = medico[i].toArray();
+        }
+        return data;
+    }
+    
+    public Vacuna[] obtenerVacunasInventarios() throws SQLException {
+        return dao.listarVacunasInventario();
+    }
 
-    public DefaultTableModel obtenerModeloTablaVacunas(JTable tabla) throws SQLException {
-        Object[][] data = obtenerVacunasArray();
+    public DefaultTableModel obtenerModeloTablaVacunas(JTable tabla, String opcion) throws SQLException {
+        Object[][] data = null;
         String[] columnNames = MySQL_Vacuna.CAMPOS_TABLA;
         int[] columnWidths = {569, 470, 200, 190, 245, 40};
+        
+        switch (opcion){
+            case "Productos":
+                data = obtenerVacunasArray();
+                break;
+            case "Inventario":
+                data = obtenerVacunasInventarioArray();
+                break;
+        }
 
         tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
         DefaultTableModel modeloTabla = new DefaultTableModel(data, columnNames) {

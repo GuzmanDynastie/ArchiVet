@@ -5,6 +5,8 @@ import ArchiVet.Modelo.Usuario;
 import static ArchiVet.ventana.ventana_menu.panel;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 import javax.swing.JComponent;
 import javax.swing.table.DefaultTableModel;
@@ -82,7 +84,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         obd.tablaDesparapli(TDesparacitacion, mode, Mascota.getText());
     }
 
-    public ventana_historialMedico(AdminUsuario adminUsuario) {
+    public ventana_historialMedico(AdminUsuario adminUsuario) throws SQLException {
         initComponents();
         imagen = new ArchiVet.Imagen.imagenes();
         Desparacitar = new ventana_aplicarDesparacitante();
@@ -91,6 +93,9 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         obd = new BD.OBD();
         ocultarBarraTitulo();
 
+        System.out.println(Arrays.toString(adminUsuario.dameNombreMedico()).replaceAll("\\[|\\]", ""));
+        System.out.println(ventana_iniciarSesion.nombreUsuario.get(0).toString());
+        
         Motivo.setLineWrap(true);
         Diagnostico.setLineWrap(true);
         Receta.setLineWrap(true);
