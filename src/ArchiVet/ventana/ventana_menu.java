@@ -5,7 +5,6 @@ import ArchiVet.ventana.componente.FondoBotones;
 import java.awt.Color;
 import java.awt.Graphics;
 import ArchiVet.ventana.componente.RoundedBorder;
-import java.sql.SQLException;
 
 public class ventana_menu extends javax.swing.JFrame {
 
@@ -29,6 +28,7 @@ public class ventana_menu extends javax.swing.JFrame {
     public void invisible() {
         FondoBotones.setVisible(false);
         cerrar.setVisible(false);
+        cerrarSesion.setVisible(false);
     }
 
     private void panelMenu() {
@@ -46,12 +46,12 @@ public class ventana_menu extends javax.swing.JFrame {
         caja.setToolTipText("Pagos");
         ingresoMedicos.setToolTipText("Registro Medicos");
         calen.setToolTipText("Agendar Cita");
-        cerrar.setToolTipText("Cerrar");
+        cerrarSesion.setText("Cerrar sesion");
+        cerrar.setToolTipText("Salir");
     }
 
-    public ventana_menu(AdminUsuario adminUsuario) throws SQLException {
+    public ventana_menu(AdminUsuario adminUsuario) {
         initComponents();
-
         FondoBotones.setOpaque(false);
         this.adminUsuario = adminUsuario;
         panel = new FondoBotones();
@@ -110,6 +110,11 @@ public class ventana_menu extends javax.swing.JFrame {
         calen = new javax.swing.JLabel(){
             public void paintComponent(Graphics g){
                 g.drawImage(imagen.cal1,0,0,getWidth(),getHeight(),this);
+            }
+        };
+        cerrarSesion = new javax.swing.JLabel(){
+            public void paintComponent(Graphics g){
+                g.drawImage(imagen.cer1,0,0,getWidth(),getHeight(),this);
             }
         };
 
@@ -207,14 +212,25 @@ public class ventana_menu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        cerrarSesion.setMaximumSize(new java.awt.Dimension(50, 50));
+        cerrarSesion.setMinimumSize(new java.awt.Dimension(50, 50));
+        cerrarSesion.setPreferredSize(new java.awt.Dimension(50, 50));
+        cerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cerrarSesionMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout FondoLayout = new javax.swing.GroupLayout(Fondo);
         Fondo.setLayout(FondoLayout);
         FondoLayout.setHorizontalGroup(
             FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+            .addGroup(FondoLayout.createSequentialGroup()
                 .addContainerGap(641, Short.MAX_VALUE)
                 .addComponent(FondoBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(529, 529, 529)
+                .addGap(461, 461, 461)
+                .addComponent(cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
@@ -224,11 +240,13 @@ public class ventana_menu extends javax.swing.JFrame {
                 .addContainerGap(925, Short.MAX_VALUE)
                 .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
-                        .addComponent(cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
                         .addComponent(FondoBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37))))
+                        .addGap(37, 37, 37))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
+                        .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -307,6 +325,12 @@ public class ventana_menu extends javax.swing.JFrame {
         panel.setVisible(false);
     }//GEN-LAST:event_calenMouseClicked
 
+    private void cerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarSesionMouseClicked
+        ventana_iniciarSesion sesion = new ventana_iniciarSesion();
+        sesion.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cerrarSesionMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel Fondo;
@@ -315,7 +339,8 @@ public class ventana_menu extends javax.swing.JFrame {
     private javax.swing.JLabel caja;
     private javax.swing.JLabel calen;
     public static javax.swing.JLabel cerrar;
-    public static javax.swing.JLabel ingresoMascota;
+    public static javax.swing.JLabel cerrarSesion;
+    private javax.swing.JLabel ingresoMascota;
     private javax.swing.JLabel ingresoMedicos;
     private javax.swing.JLabel inventario;
     // End of variables declaration//GEN-END:variables

@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class Render_Button_JTable extends DefaultTableCellRenderer{
+public class Render_Filtros extends DefaultTableCellRenderer{
     
      @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean Seleccion, boolean Foco, int Fila, int Columna){

@@ -1,19 +1,14 @@
 package ArchiVet.ventana;
 
-import ArchiVet.Admin.AdminVacuna;
-import ArchiVet.Modelo.Vacuna;
-import static ArchiVet.ventana.ventana_inventarios.Tabla_Vacunas;
 import java.awt.Graphics;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class ventana_inventarioVacuna extends javax.swing.JFrame {
 
-    private Vacuna vacuna;
-    private AdminVacuna adminVacuna;
-    private ArchiVet.Imagen.imagenes imagen;
+    BD.OBD obd = new BD.OBD();
+    ArchiVet.Imagen.imagenes imagen = new ArchiVet.Imagen.imagenes();
 
-    private void Limpiar() {
+    public void Limpiar() {
         Descripcion.setText("");
         Lote.setText("");
         Cantidad.setText("");
@@ -21,17 +16,13 @@ public class ventana_inventarioVacuna extends javax.swing.JFrame {
         Caducidad.getCalendar();
     }
 
-    private void verificar() throws SQLException {
+    public void verificar() {
         if (!(Descripcion.getText().isEmpty() || Lote.getText().isEmpty() || Cantidad.getText().isEmpty() || Precio.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
             java.sql.Date fech = new java.sql.Date(fec);
-
-            vacuna = new Vacuna(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
-            adminVacuna.insertarVacuna(vacuna);
+            obd.vacunas(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
             Limpiar();
-            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Inventario");
-            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "No se ha guardado\nVerifique los campos", "Error", JOptionPane.DEFAULT_OPTION);
         }
@@ -39,9 +30,6 @@ public class ventana_inventarioVacuna extends javax.swing.JFrame {
 
     public ventana_inventarioVacuna() {
         initComponents();
-        adminVacuna = new AdminVacuna();
-        imagen = new ArchiVet.Imagen.imagenes();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -242,17 +230,13 @@ public class ventana_inventarioVacuna extends javax.swing.JFrame {
         try {
             Limpiar();
             this.dispose();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        } catch (Exception exception) {
+
         }
     }//GEN-LAST:event_Cerrar1MouseClicked
 
     private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
-        try {
-            verificar();
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
+        verificar();
         System.out.println("Guardar");
     }//GEN-LAST:event_GuardarMouseClicked
 

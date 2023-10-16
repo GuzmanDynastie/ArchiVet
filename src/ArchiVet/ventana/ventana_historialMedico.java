@@ -2,14 +2,16 @@ package ArchiVet.ventana;
 
 import ArchiVet.Admin.AdminUsuario;
 import ArchiVet.Modelo.Usuario;
+import ArchiVet.ventana.componente.Buscardor_JTable;
 import static ArchiVet.ventana.ventana_menu.panel;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.sql.SQLException;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JComponent;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class ventana_historialMedico extends javax.swing.JInternalFrame {
 
@@ -22,6 +24,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     private long longActual = Actual.getTime();
     private java.sql.Date Fecha = new java.sql.Date(longActual);
     ventana_aplicarConsulta consulta;
+    private Buscardor_JTable buscadorJTable;
 
     private JComponent Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
     private Dimension dimBarra = null;
@@ -31,21 +34,6 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         //Precio.setText("");
     }
 
-    /* private void subir() {
-        obd.subirConsulta(8, Mascota.getText(), Fecha, "Consulta", Float.parseFloat(Precio.getText()), Realizar.getText(), 2, usuario.getUsuario());
-        obd.historial(8, Mascota.getText(), "Macho", "Consulta", Float.parseFloat(Precio.getText()), Realizar.getText(), 2);
-        obd.tablaConsultas(HistorialConsultas, Mascota.getText());
-        limpiar();
-    }*/
-
- /*private void validar() {
-        if (Mascota.getText().isBlank() || Propietario.getText().isBlank() || Precio.getText().isBlank() || Realizar.getText().isBlank()) {
-            System.out.println("Su ingreso no puede ser realizado si hay campos vacios");
-        } else {
-            System.out.println("Su ingreso fue exitoso");
-            subir();
-        }
-    }*/
     private void ocultarBarraTitulo() {
         Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
         dimBarra = Barra.getPreferredSize();
@@ -63,13 +51,17 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         ScrollReceta.setVisible(false);
         lHistorialConsultas.setVisible(false);
         ScrollHistorialConsultas.setVisible(false);
-        //Precio.setVisible(false);
-        //lPrecio.setVisible(false);
         agregarconsulta.setVisible(false);
-        //MAS1.setVisible(false);
-        //MAS2.setVisible(false);
         historial1.setEnabled(false);
         cerrar.setVisible(false);
+        lDate.setEnabled(false);
+        Date.setEnabled(false);
+        lPeso.setEnabled(false);
+        Peso.setEnabled(false);
+        lFC.setEnabled(false);
+        FC.setEnabled(false);
+        lFR.setEnabled(false);
+        FR.setEnabled(false);
     }
 
     public void CargarTablaVacuna() {
@@ -84,7 +76,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         obd.tablaDesparapli(TDesparacitacion, mode, Mascota.getText());
     }
 
-    public ventana_historialMedico(AdminUsuario adminUsuario) throws SQLException {
+    public ventana_historialMedico(AdminUsuario adminUsuario) {
         initComponents();
         imagen = new ArchiVet.Imagen.imagenes();
         Desparacitar = new ventana_aplicarDesparacitante();
@@ -92,9 +84,6 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         usuario = new Usuario();
         obd = new BD.OBD();
         ocultarBarraTitulo();
-
-        System.out.println(Arrays.toString(adminUsuario.dameNombreMedico()).replaceAll("\\[|\\]", ""));
-        System.out.println(ventana_iniciarSesion.nombreUsuario.get(0).toString());
 
         Motivo.setLineWrap(true);
         Diagnostico.setLineWrap(true);
@@ -129,8 +118,18 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         Receta = new javax.swing.JTextArea();
         ScrollHistorialConsultas = new javax.swing.JScrollPane();
         HistorialConsultas = new javax.swing.JTable();
-        agregarconsulta = new javax.swing.JButton();
         lHistorialConsultas = new javax.swing.JLabel();
+        lDate = new javax.swing.JLabel();
+        Date = new com.toedter.calendar.JDateChooser();
+        Filtra = new javax.swing.JLabel();
+        Borrar = new javax.swing.JLabel();
+        lPeso = new javax.swing.JLabel();
+        Peso = new javax.swing.JTextField();
+        lFC = new javax.swing.JLabel();
+        FC = new javax.swing.JTextField();
+        lFR = new javax.swing.JLabel();
+        FR = new javax.swing.JTextField();
+        agregarconsulta = new javax.swing.JButton();
         Barra1 = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         MAS = new javax.swing.JLabel();
@@ -188,7 +187,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         TVacunas.setGridColor(new java.awt.Color(255, 255, 255));
         TVacunas.setRowHeight(25);
         TVacunas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        TVacunas.setShowGrid(true);
+        TVacunas.setShowGrid(false);
         TVacunas.getTableHeader().setResizingAllowed(false);
         TVacunas.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(TVacunas);
@@ -227,7 +226,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         });
         TDesparacitacion.setRowHeight(25);
         TDesparacitacion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        TDesparacitacion.setShowGrid(true);
+        TDesparacitacion.setShowGrid(false);
         TDesparacitacion.getTableHeader().setResizingAllowed(false);
         TDesparacitacion.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(TDesparacitacion);
@@ -308,6 +307,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         lMotivo.setForeground(new java.awt.Color(255, 255, 255));
         lMotivo.setText("Motivo de consulta");
 
+        Motivo.setEditable(false);
         Motivo.setColumns(20);
         Motivo.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
         Motivo.setRows(5);
@@ -318,6 +318,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         lDiagnostico.setForeground(new java.awt.Color(255, 255, 255));
         lDiagnostico.setText("Diagnostico");
 
+        Diagnostico.setEditable(false);
         Diagnostico.setColumns(20);
         Diagnostico.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
         Diagnostico.setRows(5);
@@ -328,6 +329,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         lReceta.setForeground(new java.awt.Color(255, 255, 255));
         lReceta.setText("Receta");
 
+        Receta.setEditable(false);
         Receta.setColumns(20);
         Receta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
         Receta.setRows(5);
@@ -340,17 +342,20 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Fecha", "Motivo", "Medico"
+                "Fecha", "Motivo", "Medico", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        HistorialConsultas.setMaximumSize(new java.awt.Dimension(500, 500));
+        HistorialConsultas.setMinimumSize(new java.awt.Dimension(500, 500));
+        HistorialConsultas.setPreferredSize(new java.awt.Dimension(500, 500));
         HistorialConsultas.setRowHeight(29);
         HistorialConsultas.getTableHeader().setResizingAllowed(false);
         HistorialConsultas.getTableHeader().setReorderingAllowed(false);
@@ -362,9 +367,94 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
         ScrollHistorialConsultas.setViewportView(HistorialConsultas);
         if (HistorialConsultas.getColumnModel().getColumnCount() > 0) {
             HistorialConsultas.getColumnModel().getColumn(0).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(0).setPreferredWidth(150);
             HistorialConsultas.getColumnModel().getColumn(1).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(1).setPreferredWidth(200);
             HistorialConsultas.getColumnModel().getColumn(2).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(2).setPreferredWidth(150);
+            HistorialConsultas.getColumnModel().getColumn(3).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(3).setPreferredWidth(1);
+            HistorialConsultas.getColumnModel().getColumn(4).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(4).setPreferredWidth(1);
+            HistorialConsultas.getColumnModel().getColumn(5).setResizable(false);
+            HistorialConsultas.getColumnModel().getColumn(5).setPreferredWidth(1);
         }
+
+        lHistorialConsultas.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lHistorialConsultas.setForeground(new java.awt.Color(255, 255, 255));
+        lHistorialConsultas.setText("Consultas Anteriores");
+
+        lDate.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lDate.setForeground(new java.awt.Color(255, 255, 255));
+        lDate.setText("Filtar fecha");
+        lDate.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        Date.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        Filtra.setText("jLabel3");
+        Filtra.setMaximumSize(new java.awt.Dimension(50, 50));
+        Filtra.setMinimumSize(new java.awt.Dimension(50, 50));
+        Filtra.setPreferredSize(new java.awt.Dimension(50, 50));
+        Filtra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FiltraMouseClicked(evt);
+            }
+        });
+
+        Borrar.setText("jLabel8");
+        Borrar.setMaximumSize(new java.awt.Dimension(50, 50));
+        Borrar.setMinimumSize(new java.awt.Dimension(50, 50));
+        Borrar.setPreferredSize(new java.awt.Dimension(50, 50));
+        Borrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BorrarMouseClicked(evt);
+            }
+        });
+
+        lPeso.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lPeso.setForeground(new java.awt.Color(255, 255, 255));
+        lPeso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lPeso.setText("Peso");
+        lPeso.setMaximumSize(new java.awt.Dimension(100, 29));
+        lPeso.setMinimumSize(new java.awt.Dimension(100, 29));
+        lPeso.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        Peso.setEditable(false);
+        Peso.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        Peso.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Peso.setMaximumSize(new java.awt.Dimension(100, 29));
+        Peso.setMinimumSize(new java.awt.Dimension(100, 29));
+        Peso.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        lFC.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lFC.setForeground(new java.awt.Color(255, 255, 255));
+        lFC.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lFC.setText("F.C.");
+        lFC.setMaximumSize(new java.awt.Dimension(100, 29));
+        lFC.setMinimumSize(new java.awt.Dimension(100, 29));
+        lFC.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        FC.setEditable(false);
+        FC.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        FC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        FC.setMaximumSize(new java.awt.Dimension(100, 29));
+        FC.setMinimumSize(new java.awt.Dimension(100, 29));
+        FC.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        lFR.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        lFR.setForeground(new java.awt.Color(255, 255, 255));
+        lFR.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lFR.setText("F.R.");
+        lFR.setMaximumSize(new java.awt.Dimension(100, 29));
+        lFR.setMinimumSize(new java.awt.Dimension(100, 29));
+        lFR.setPreferredSize(new java.awt.Dimension(100, 29));
+
+        FR.setEditable(false);
+        FR.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
+        FR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        FR.setMaximumSize(new java.awt.Dimension(100, 29));
+        FR.setMinimumSize(new java.awt.Dimension(100, 29));
+        FR.setPreferredSize(new java.awt.Dimension(100, 29));
 
         agregarconsulta.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
         agregarconsulta.setText("Agregar");
@@ -374,10 +464,6 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
             }
         });
 
-        lHistorialConsultas.setFont(new java.awt.Font("Arial Narrow", 0, 24)); // NOI18N
-        lHistorialConsultas.setForeground(new java.awt.Color(255, 255, 255));
-        lHistorialConsultas.setText("Consultas Anteriores");
-
         javax.swing.GroupLayout FondoConsultasLayout = new javax.swing.GroupLayout(FondoConsultas);
         FondoConsultas.setLayout(FondoConsultasLayout);
         FondoConsultasLayout.setHorizontalGroup(
@@ -385,57 +471,94 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoConsultasLayout.createSequentialGroup()
                 .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGap(600, 600, 600)
-                        .addComponent(lDiagnostico))
+                        .addGap(44, 44, 44)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Peso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(53, 53, 53)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(52, 52, 52)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lFR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addComponent(lDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(FondoConsultasLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(FondoConsultasLayout.createSequentialGroup()
-                                .addGap(97, 97, 97)
-                                .addComponent(agregarconsulta))
-                            .addGroup(FondoConsultasLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lHistorialConsultas)))
-                        .addGap(38, 38, 38)
-                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ScrollMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ScrollDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(Filtra, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Borrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Date, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(FondoConsultasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lHistorialConsultas))
+                    .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ScrollMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ScrollDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(FondoConsultasLayout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(lDiagnostico)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ScrollReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lReceta))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoConsultasLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(agregarconsulta)
+                .addGap(800, 800, 800))
         );
         FondoConsultasLayout.setVerticalGroup(
             FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FondoConsultasLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lReceta)
-                    .addComponent(lHistorialConsultas))
+                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lReceta)
+                        .addComponent(lDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ScrollMotivo)
-                            .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(lDiagnostico)
+                        .addComponent(ScrollReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(113, 113, 113))
+                    .addGroup(FondoConsultasLayout.createSequentialGroup()
                         .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(FondoConsultasLayout.createSequentialGroup()
+                                .addComponent(ScrollMotivo)
+                                .addGap(18, 18, 18)
+                                .addComponent(lDiagnostico)
                                 .addGap(18, 18, 18)
                                 .addComponent(ScrollDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(FondoConsultasLayout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addComponent(agregarconsulta))))
-                    .addGroup(FondoConsultasLayout.createSequentialGroup()
-                        .addComponent(ScrollReceta, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(100, 100, 100))
+                                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Filtra, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Borrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lHistorialConsultas)
+                                .addGap(18, 18, 18)
+                                .addComponent(ScrollHistorialConsultas, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lFR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33)
+                                .addGroup(FondoConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(Peso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(FC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(FR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(33, 33, 33)
+                        .addComponent(agregarconsulta)
+                        .addGap(31, 31, 31))))
         );
 
         historial1.addTab("Consultas", FondoConsultas);
@@ -594,13 +717,40 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_agregarconsultaActionPerformed
 
     private void HistorialConsultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HistorialConsultasMouseClicked
-        Motivo.setText(String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 2)));
+        Motivo.setText(String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 1)));
+        Diagnostico.setText(String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 3)));
+        Receta.setText(String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 4)));
+        String[] parametros = (String.valueOf(HistorialConsultas.getValueAt(HistorialConsultas.getSelectedRow(), 5))).split("/");
+        Peso.setText(parametros[0]);
+        FC.setText(parametros[1]);
+        FR.setText(parametros[2]);
     }//GEN-LAST:event_HistorialConsultasMouseClicked
+
+    private void FiltraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiltraMouseClicked
+        SimpleDateFormat filtro = new SimpleDateFormat("yyyy-MM-dd");
+
+        /*TableRowSorter<DefaultTableModel> Sorter;
+        DefaultTableModel Modelo = (DefaultTableModel) this.HistorialConsultas.getModel();
+        Sorter = new TableRowSorter<>(Modelo);
+        HistorialConsultas.setRowSorter(Sorter);
+        Sorter.setRowFilter(RowFilter.regexFilter(filtro.format(Date), 0));*/
+        DefaultTableModel mode = (DefaultTableModel) HistorialConsultas.getModel();
+        //buscadorJTable.buscarEnTabla(mode, , filtro, "Fecha");
+    }//GEN-LAST:event_FiltraMouseClicked
+
+    private void BorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BorrarMouseClicked
+
+    }//GEN-LAST:event_BorrarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Barra1;
+    public static javax.swing.JLabel Borrar;
+    public static com.toedter.calendar.JDateChooser Date;
     public static javax.swing.JTextArea Diagnostico;
+    public static javax.swing.JTextField FC;
+    public static javax.swing.JTextField FR;
+    public static javax.swing.JLabel Filtra;
     private javax.swing.JPanel FondoCarnet;
     private javax.swing.JPanel FondoConsultas;
     public static javax.swing.JTable HistorialConsultas;
@@ -608,6 +758,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField Mascota;
     public static javax.swing.JTextArea Motivo;
     private javax.swing.JLabel PRO;
+    public static javax.swing.JTextField Peso;
     public static javax.swing.JTextField Propietario;
     public static javax.swing.JTextArea Receta;
     public static javax.swing.JScrollPane ScrollDiagnostico;
@@ -626,9 +777,13 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JLabel lDate;
     public static javax.swing.JLabel lDiagnostico;
+    public static javax.swing.JLabel lFC;
+    public static javax.swing.JLabel lFR;
     private javax.swing.JLabel lHistorialConsultas;
     public static javax.swing.JLabel lMotivo;
+    public static javax.swing.JLabel lPeso;
     public static javax.swing.JLabel lReceta;
     // End of variables declaration//GEN-END:variables
 }

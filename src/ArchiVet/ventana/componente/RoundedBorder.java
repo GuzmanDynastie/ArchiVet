@@ -10,7 +10,6 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.border.Border;
 
 public class RoundedBorder implements Border {
-
     private final int radius;
     private final int thickness;
     private final Color color;
@@ -22,7 +21,7 @@ public class RoundedBorder implements Border {
         this.color = color;
         this.colorr = null;
     }
-
+    
     public RoundedBorder(int radius, int thickness, Color color, Color colorr) {
         this.radius = radius;
         this.thickness = thickness;
@@ -38,7 +37,7 @@ public class RoundedBorder implements Border {
 
         // Dibuja un borde redondeado
         g2d.draw(new RoundRectangle2D.Double(x, y, width - 1, height - 1, radius, radius));
-
+        
         if (colorr != null) {
             c.setBackground(colorr);
         }

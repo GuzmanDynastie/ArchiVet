@@ -27,7 +27,18 @@ public class AdminUsuario  {
         return dao.validarCredenciales(usuario);
     } 
     
-    public Usuario[] dameNombreMedico() throws SQLException {
-        return dao.obtenerNombreUsuario();
+    public Usuario consultarNombre(String user) {
+        try {
+            Usuario usuario = dao.obtenerNombreUsuario(user);
+
+            if (usuario != null) {
+                return usuario;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 }

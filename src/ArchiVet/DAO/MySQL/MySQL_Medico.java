@@ -2,15 +2,12 @@ package ArchiVet.DAO.MySQL;
 
 import ArchiVet.DAO.DAO;
 import ArchiVet.Modelo.Medico;
-import ArchiVet.Util.closeResource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MySQL_Medico extends DAO {
-
-    private static final closeResource CLOSE_RESOURCE = new closeResource();
 
     private final String INSERT = "INSERT INTO medicos(NOMBRE, APELLIDO, USUARIO, CONTRASEÑA, TELEFONO, CELULAR, CORREO_ELECTRONICO, DOMICILIO, CODIGO_POSTAL, CARGO, CEDULA)"
             + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,29 +34,25 @@ public class MySQL_Medico extends DAO {
 
     public boolean insertarMedico(Medico medico) {
         boolean resultado = false;
-        PreparedStatement prep = null;
         try {
-            prep = connection.prepare(INSERT);
+            PreparedStatement prep = connection.prepare(INSERT);
             completarPrepareStatement(medico, prep);
             resultado = prep.executeUpdate() > 0;
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-        } finally {
-            CLOSE_RESOURCE.closeResource(prep);
         }
         return resultado;
     }
 
     public Medico consultarID(int ID) throws SQLException {
-        PreparedStatement prep = null;
-        ResultSet rs = null;
-        try {
-            prep = connection.prepare(CONSULTAR_POR_ID);
-            prep.setInt(1, ID);
-            rs = prep.executeQuery();
 
+        PreparedStatement prep = connection.prepare(CONSULTAR_POR_ID);
+        prep.setInt(1, ID);
+
+        try (ResultSet rs = prep.executeQuery()) {
             if (rs.next()) {
+
                 return new Medico(rs.getString("TELEFONO"), rs.getString("USUARIO"), rs.getString("CONTRASEÑA"),
                         rs.getString("CARGO"), rs.getString("CEDULA"), rs.getString("NOMBRE"), rs.getString("APELLIDO"),
                         rs.getString("CELULAR"), rs.getString("CORREO_ELECTRONICO"), rs.getString("DOMICILIO"),
@@ -70,9 +63,6 @@ public class MySQL_Medico extends DAO {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return null;
-        } finally {
-            CLOSE_RESOURCE.closeResource(prep);
-            CLOSE_RESOURCE.closeResource(rs);
         }
     }
 
@@ -91,11 +81,17 @@ public class MySQL_Medico extends DAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            CLOSE_RESOURCE.closeResource(prep);
+            try {
+                if (prep != null) {
+                    prep.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar el PreparedStatement: " + e.getMessage());
+            }
         }
         return false; // La actualización falló
     }
-
+    
     public boolean eliminarMedico(Medico medico) {
         PreparedStatement prep = null;
         try {
@@ -110,16 +106,21 @@ public class MySQL_Medico extends DAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
-            CLOSE_RESOURCE.closeResource(prep);
+            try {
+                if (prep != null) {
+                    prep.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar el PreparedStatement: " + e.getMessage());
+            }
         }
         return false; // La actualización falló
     }
 
     public Medico[] obtenerDatosMedico() {
         ArrayList<Medico> lista = new ArrayList();
-        ResultSet rs = null;
         try {
-            rs = connection.executeQuery(GET_ALL);
+            ResultSet rs = connection.executeQuery(GET_ALL);
             while (rs.next()) {
                 lista.add(new Medico(rs.getInt("ID"), rs.getString("TELEFONO"), rs.getString("USUARIO"),
                         rs.getString("CONTRASEÑA"), rs.getString("CARGO"), rs.getString("CEDULA"),
@@ -128,10 +129,10 @@ public class MySQL_Medico extends DAO {
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-        } finally {
-            CLOSE_RESOURCE.closeResource(rs);
         }
         return lista.toArray(Medico[]::new);
     }
+
+    
 
 }

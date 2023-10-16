@@ -4,26 +4,13 @@ public class Usuario {
     
     private String usuario;
     private String contrasenia;
-    private String nombre;
 
     public Usuario(String usuario, String contrasenia) {
         this.usuario = usuario;
         this.contrasenia = contrasenia;
     }
-    
-    public Usuario(String nombre) {
-        this.nombre = nombre;
-    }
 
     public Usuario() {
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
     
     public String getUsuario() {
@@ -44,10 +31,8 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return nombre;
+        return "Usuarios{" + "usuario=" + usuario + ", contrasenia=" + contrasenia + '}';
     }
-
-    
     
     
 }
