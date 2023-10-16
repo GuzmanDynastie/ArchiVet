@@ -26,6 +26,7 @@ public class AdminCitas {
         Object[][] data = new Object[citas.length][];
         for (int i = 0, len = citas.length; i < len; i++) {
             data[i] = citas[i].toArray();
+
         }
         return data;
     }
