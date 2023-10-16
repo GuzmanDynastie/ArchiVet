@@ -112,7 +112,6 @@ public class ventana_menu extends javax.swing.JFrame {
                 g.drawImage(imagen.cal1,0,0,getWidth(),getHeight(),this);
             }
         };
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -208,8 +207,6 @@ public class ventana_menu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton1.setText("jButton1");
-
         javax.swing.GroupLayout FondoLayout = new javax.swing.GroupLayout(Fondo);
         Fondo.setLayout(FondoLayout);
         FondoLayout.setHorizontalGroup(
@@ -220,17 +217,11 @@ public class ventana_menu extends javax.swing.JFrame {
                 .addGap(529, 529, 529)
                 .addComponent(cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
-            .addGroup(FondoLayout.createSequentialGroup()
-                .addGap(446, 446, 446)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         FondoLayout.setVerticalGroup(
             FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FondoLayout.createSequentialGroup()
-                .addContainerGap(506, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(396, 396, 396)
+                .addContainerGap(925, Short.MAX_VALUE)
                 .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoLayout.createSequentialGroup()
                         .addComponent(cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -327,6 +318,5 @@ public class ventana_menu extends javax.swing.JFrame {
     public static javax.swing.JLabel ingresoMascota;
     private javax.swing.JLabel ingresoMedicos;
     private javax.swing.JLabel inventario;
-    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }
