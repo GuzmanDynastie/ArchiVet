@@ -25,15 +25,18 @@ public class AdminVacuna {
 
     public Object[][] obtenerVacunasArray() throws SQLException {
         Vacuna[] vacuna = obtenerVacunas();
+        if (vacuna == null || vacuna.length == 0) {
+            return new Object[0][0];
+        }
         int numColumns = vacuna[0].toArray().length + 1; // Agregar una columna para el botón
         Object[][] data = new Object[vacuna.length][numColumns];
 
         for (int i = 0; i < vacuna.length; i++) {
             Object[] rowData = vacuna[i].toArray();
-            
+
             // Copiar los datos de la vacuna a las primeras columnas
             System.arraycopy(rowData, 0, data[i], 0, rowData.length);
-            
+
             // Agregar el botón en la última columna
             JButton btn = new JButton("");
             ImageIcon icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/mas.png"));
@@ -48,16 +51,19 @@ public class AdminVacuna {
     public Vacuna[] obtenerVacunas() throws SQLException {
         return dao.listarVacunas();
     }
-    
+
     public Object[][] obtenerVacunasInventarioArray() throws SQLException {
-        Vacuna[] medico = obtenerVacunasInventarios();
-        Object[][] data = new Object[medico.length][];
-        for (int i = 0, len = medico.length; i < len; i++) {
-            data[i] = medico[i].toArray();
+        Vacuna[] vacuna = obtenerVacunasInventarios();
+        if (vacuna == null || vacuna.length == 0) {
+            return new Object[0][0];
         }
-        return data;
+        Object[][] data = new Object[vacuna.length][];
+        for (int i = 0, len = vacuna.length; i < len; i++) {
+            data[i] = vacuna[i].toArray();
+        }
+            return data;
     }
-    
+
     public Vacuna[] obtenerVacunasInventarios() throws SQLException {
         return dao.listarVacunasInventario();
     }
@@ -66,8 +72,8 @@ public class AdminVacuna {
         Object[][] data = null;
         String[] columnNames = MySQL_Vacuna.CAMPOS_TABLA;
         int[] columnWidths = {569, 470, 200, 190, 245, 40};
-        
-        switch (opcion){
+
+        switch (opcion) {
             case "Productos":
                 data = obtenerVacunasArray();
                 break;
@@ -77,12 +83,23 @@ public class AdminVacuna {
         }
 
         tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
-        DefaultTableModel modeloTabla = new DefaultTableModel(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        DefaultTableModel modeloTabla;
+
+        if (data != null && data.length > 0) {
+            modeloTabla = new DefaultTableModel(data, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        } else {
+            modeloTabla = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        }
         tabla.setModel(modeloTabla);
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

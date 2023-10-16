@@ -25,6 +25,9 @@ public class AdminDesparacitante {
 
     public Object[][] obtenerDesparacitantesArray() throws SQLException {
         Desparacitante[] desparacitante = obtenerDesparacitantes();
+        if (desparacitante == null || desparacitante.length == 0) {
+            return new Object[0][0];
+        }
         int numColumns = desparacitante[0].toArray().length + 1; // Agregar una columna para el botón
         Object[][] data = new Object[desparacitante.length][numColumns];
 
@@ -51,6 +54,9 @@ public class AdminDesparacitante {
     
     public Object[][] obtenerDesparacitantesInventarioArray() throws SQLException {
         Desparacitante[] desparacitante = obtenerDesparacitantesInventario();
+        if (desparacitante == null || desparacitante.length == 0) {
+            return new Object[0][0];
+        }
         Object[][] data = new Object[desparacitante.length][];
         for (int i = 0, len = desparacitante.length; i < len; i++) {
             data[i] = desparacitante[i].toArray();
@@ -77,12 +83,23 @@ public class AdminDesparacitante {
         }
         
         tabla.setDefaultRenderer(Object.class, new Render_Button_JTable());
-        DefaultTableModel modeloTabla = new DefaultTableModel(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        DefaultTableModel modeloTabla;
+
+        if (data != null && data.length > 0) {
+            modeloTabla = new DefaultTableModel(data, columnNames) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        } else {
+            modeloTabla = new DefaultTableModel(columnNames, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+        }
         tabla.setModel(modeloTabla);
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 

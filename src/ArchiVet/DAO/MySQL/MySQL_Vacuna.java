@@ -19,7 +19,7 @@ public class MySQL_Vacuna extends DAO {
     private static final String INSERT = "INSERT INTO vacunas(Descripcion, Lote, Cantidad, Precio, Caducidad) VALUES(?, ?, ?, ?, ?)";
     private static final String GET_ALL_VALIDATION = "WITH CTE AS (SELECT Descripcion, Lote, Cantidad, Precio, Caducidad, ROW_NUMBER() OVER (PARTITION BY Descripcion ORDER BY Caducidad) "
             + "AS RowNum FROM vacunas WHERE Cantidad > 0 AND Caducidad >= ?) SELECT Descripcion, Lote, Cantidad, Precio, Caducidad FROM CTE WHERE RowNum = 1";
-    private static final String GET_ALL = "SELECT * FROM vacunas WHERE Caducidad >= ?";
+    private static final String GET_ALL = "SELECT * FROM vacunas WHERE Caducidad >= ? AND Cantidad > 0";
     public static final String[] CAMPOS_TABLA = {"DESCRIPCION", "LOTE", "STOCK", "PRECIO UNITARIO", "CADUCIDAD", ""};
 
     private void completarPrepareStatement(Vacuna vacuna, PreparedStatement prep) throws SQLException {

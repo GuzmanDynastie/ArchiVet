@@ -3,12 +3,10 @@ package ArchiVet.ventana;
 import ArchiVet.Admin.AdminDesparacitante;
 import ArchiVet.Admin.AdminMedicamento;
 import ArchiVet.Admin.AdminVacuna;
-import ArchiVet.ventana.componente.Render_Button_JTable;
-import Archivet.Controlador.Filtraciones;
+import ArchiVet.ventana.componente.JTable_Productos_Agregados;
 import static ArchiVet.ventana.ventana_puntoVenta.SALDO;
 import static ArchiVet.ventana.ventana_puntoVenta.mostradorCaja;
 import static ArchiVet.ventana.ventana_mostradorCaja.PAGO;
-import static ArchiVet.ventana.ventana_mostradorCaja.RES_CLAVE;
 import static ArchiVet.ventana.ventana_mostradorCaja.Tabla_PRODUCTOS_ADD;
 import static ArchiVet.ventana.ventana_mostradorCaja.Total_Cuenta;
 import java.awt.Color;
@@ -16,23 +14,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class ventana_productos extends javax.swing.JInternalFrame {
-    
+
     private AdminVacuna adminVacuna;
     private AdminDesparacitante adminDesparacitante;
     private AdminMedicamento adminMedicamento;
     private ArchiVet.Imagen.imagenes imagen;
 
-    static int Pieza;
-    public static Object[] Compra = new Object[9];
     static String[] TITULOS = {"DESCRIPCION", "LOTE", "PRECIO UNITARIO", "CADUCIDAD", "PIEZAS", "BORRAR", ""};
 
     static DefaultTableModel model = new DefaultTableModel(null, TITULOS) {
@@ -43,18 +34,6 @@ public class ventana_productos extends javax.swing.JInternalFrame {
 
         public Class getColumnClass(int columnIndex) {
             return types[columnIndex];
-        }
-
-        public boolean isCellEditable(int fila, int columna) {
-            if (RES_CLAVE == true) {
-                if (columna == 4) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
-
         }
     };
 
@@ -68,17 +47,89 @@ public class ventana_productos extends javax.swing.JInternalFrame {
         Barra.setPreferredSize(new Dimension(0, 0));
         repaint();
     }
+    
+    private void accionTablaVacunas(java.awt.event.MouseEvent evt) {
+        try {
+            int seleccion = Tabla_Vacunas.rowAtPoint(evt.getPoint());
+            int columna = Tabla_Vacunas.getColumnModel().getColumnIndexAtX(evt.getX());
+            int fila = evt.getY() / Tabla_Vacunas.getRowHeight();
+
+            JTable_Productos_Agregados tabla = new JTable_Productos_Agregados();
+            tabla.tablaGeneralProductos(Tabla_Vacunas, seleccion, columna, fila, Tabla_PRODUCTOS_ADD, "Vacunas");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private void accionTablaDesparacitantes(java.awt.event.MouseEvent evt) {
+        try {
+            int seleccion = Tabla_Desparacitantes.rowAtPoint(evt.getPoint());
+            int columna = Tabla_Desparacitantes.getColumnModel().getColumnIndexAtX(evt.getX());
+            int fila = evt.getY() / Tabla_Desparacitantes.getRowHeight();
+
+            JTable_Productos_Agregados tabla = new JTable_Productos_Agregados();
+            tabla.tablaGeneralProductos(Tabla_Desparacitantes, seleccion, columna, fila, Tabla_PRODUCTOS_ADD, "Desparacitante");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private void accionTablaMedicamentos(java.awt.event.MouseEvent evt) {
+        try {
+            int seleccion = Tabla_Medicamentos.rowAtPoint(evt.getPoint());
+            int columna = Tabla_Medicamentos.getColumnModel().getColumnIndexAtX(evt.getX());
+            int fila = evt.getY() / Tabla_Medicamentos.getRowHeight();
+
+            JTable_Productos_Agregados tabla = new JTable_Productos_Agregados();
+            tabla.tablaGeneralProductos(Tabla_Medicamentos, seleccion, columna, fila, Tabla_PRODUCTOS_ADD, "Medicamento");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private void botonVolver() {
+        double Piezas, Precio;
+        double MAXT = 0;
+
+        for (int i = 0; i < Tabla_PRODUCTOS_ADD.getRowCount(); i++) {
+
+            Precio = Double.parseDouble(Tabla_PRODUCTOS_ADD.getValueAt(i, 2).toString());
+            Piezas = Double.parseDouble(Tabla_PRODUCTOS_ADD.getValueAt(i, 4).toString());
+
+            MAXT += Precio * Piezas;
+        }
+
+        if (SALDO != 0) {
+            Total_Cuenta.setForeground(Color.red);
+            PAGO.setForeground(Color.red);
+            Total_Cuenta.setText(String.valueOf(MAXT + SALDO));
+        } else if (SALDO == 0) {
+            Total_Cuenta.setForeground(Color.red);
+            PAGO.setForeground(Color.red);
+            Total_Cuenta.setText(String.valueOf(MAXT));
+        }
+
+        System.out.println(MAXT);
+        mostradorCaja.setVisible(true);
+        this.dispose();
+    }
 
     public ventana_productos() throws SQLException {
+
         initComponents();
-        
         imagen = new ArchiVet.Imagen.imagenes();
         adminVacuna = new AdminVacuna();
         adminDesparacitante = new AdminDesparacitante();
         adminMedicamento = new AdminMedicamento();
-        adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Productos");
-        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Productos");
-        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Productos");
+
+        try {
+            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Productos");
+            adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Productos");
+            adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Productos");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+
         ocultarBarraTitulo();
 
         Font myFont2 = new Font("Arial", Font.CENTER_BASELINE, 20);
@@ -371,129 +422,7 @@ public class ventana_productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Tabla_VacunasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_VacunasMouseClicked
-        Tabla_PRODUCTOS_ADD.setDefaultRenderer(Object.class, new Render_Button_JTable());
-
-        ImageIcon icono;
-
-        JButton btn = new JButton("");
-        icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/borrar1.png"));
-        btn.setIcon(icono);
-        btn.setBounds(0, 0, 50, 35);
-        btn.setName("E");
-
-//            JButton btn2 = new JButton("");
-//            icono2 = new ImageIcon(getClass().getResource("/Iconos/editar.png"));
-//            btn2.setIcon(icono2);
-//            btn2.setBounds(0, 0, 50, 35);
-//            btn2.setName("M");
-        int seleccion = Tabla_Vacunas.rowAtPoint(evt.getPoint());
-
-        int columna = Tabla_Vacunas.getColumnModel().getColumnIndexAtX(evt.getX());
-        int fila = evt.getY() / Tabla_Vacunas.getRowHeight();
-
-        Tabla_PRODUCTOS_ADD.setModel(model);
-        //Tabla_PRODUCTOS_ADD.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        Tabla_PRODUCTOS_ADD.getColumn("DESCRIPCION").setPreferredWidth(640);
-        Tabla_PRODUCTOS_ADD.getColumn("LOTE").setPreferredWidth(460);
-        Tabla_PRODUCTOS_ADD.getColumn("PRECIO UNITARIO").setPreferredWidth(190);
-        Tabla_PRODUCTOS_ADD.getColumn("CADUCIDAD").setPreferredWidth(245);
-        Tabla_PRODUCTOS_ADD.getColumn("PIEZAS").setPreferredWidth(115);
-        //Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(15);
-        Tabla_PRODUCTOS_ADD.getColumn("BORRAR").setPreferredWidth(65);
-        Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(0);
-
-        if (fila < Tabla_Vacunas.getRowCount() && fila >= 0 && columna < Tabla_Vacunas.getColumnCount() && columna >= 0) {
-            Object value = Tabla_Vacunas.getValueAt(fila, columna);
-            if (value instanceof JButton) {
-                ((JButton) value).doClick();
-                JButton boton = (JButton) value;
-
-                if (boton.getName().equalsIgnoreCase("AGREGAR")) {
-                    int stock = Integer.parseInt(String.valueOf(Tabla_Vacunas.getValueAt(seleccion, 2)));
-
-                    if (stock == 0) {
-                        JOptionPane.showMessageDialog(null, "Ya no exiten piezas en existencia, recuerde surtir mas");
-                    } else {
-                        do {
-                            try {
-
-                                if (stock <= 10) {
-                                    JOptionPane.showMessageDialog(null, "Quedan solamente " + stock + " piezas en existencia, recuerde surtir mas");
-                                } 
-                                    JOptionPane.showMessageDialog(null, "Recuerda que solo hay " + stock + " piezas");
-                                    Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-
-                                    if (Pieza < 0) {
-                                        JOptionPane.showMessageDialog(null, "Error, no puedes ingresar numeros negativos", "Error", JOptionPane.ERROR_MESSAGE);
-                                    }
-                                
-
-                            } catch (NumberFormatException e) {
-                                JOptionPane.showMessageDialog(null, "Error, Solo puedes ingresar numeros", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-
-                        } while (stock < Pieza || Pieza <= 0 || stock == 0);
-
-                        Compra[0] = String.valueOf(Tabla_Vacunas.getValueAt(seleccion, 0)); //DESCRIPCION
-                        Compra[1] = String.valueOf(Tabla_Vacunas.getValueAt(seleccion, 1)); //LOTE
-                        Compra[2] = String.valueOf(Tabla_Vacunas.getValueAt(seleccion, 3)); //CADUCIDAD
-                        Compra[3] = String.valueOf(Tabla_Vacunas.getValueAt(seleccion, 4)); //PRECIO UNITARIO
-                        Compra[4] = Pieza;
-                        //Compra[5] = btn2;
-                        Compra[5] = btn;
-                        Compra[6] = stock;
-
-                        JOptionPane.showMessageDialog(null, "Productos Agregados");
-
-                        int filaExistente = -1;
-                        int ultimoValor = 0;
-
-                        // Buscar la fila correspondiente en Tabla_PRODUCTOS_ADD
-                        for (int i = 0; i < Tabla_PRODUCTOS_ADD.getRowCount(); i++) {
-                            String descripcion = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 0));
-                            String lote = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 1));
-                            if (descripcion.equals(Compra[0]) && lote.equals(Compra[1])) {
-                                filaExistente = i;
-                                ultimoValor = Integer.parseInt(String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 4))); // Obtener el último valor de "PIEZAS"
-                                break;
-                            }
-                        }
-
-                        if (filaExistente != -1) {
-                            // Sumar el valor de Compra[4] al último valor de "PIEZAS" y actualizarlo en la fila existente
-                            int nuevoValor = Integer.parseInt(Compra[4].toString());
-                            int NN = nuevoValor + ultimoValor;
-                            Tabla_PRODUCTOS_ADD.setValueAt(NN, filaExistente, 4); // Actualizar el valor de "PIEZAS"
-                            // Actualizar otros valores si es necesario
-                        } else {
-                            // Agregar una nueva fila si no existe una fila correspondiente
-                            model.addRow(Compra);
-                        }
-                        Filtraciones.UPDATE_VACUNAS((stock - Pieza), Compra[1].toString());
-                        try {
-                            //filtraciones.Inventario_Vacunas("A", Tabla_Vacunas);
-                            adminVacuna.obtenerModeloTablaVacunas(Tabla_Vacunas, "Productos");
-                        } catch (SQLException ex) {
-                            System.err.println(ex.getMessage());
-                        }
-                        
-                    }
-                    Tabla_PRODUCTOS_ADD.setCellSelectionEnabled(true);
-
-                }
-            }
-
-            if (value instanceof JCheckBox) {
-                JCheckBox CH = (JCheckBox) value;
-                if (CH.isSelected() == true) {
-                    CH.setSelected(false);
-                }
-                if (CH.isSelected() == false) {
-                    CH.setSelected(true);
-                }
-            }
-        }
+        accionTablaVacunas(evt);
     }//GEN-LAST:event_Tabla_VacunasMouseClicked
 
     private void Tabla_VacunasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Tabla_VacunasFocusLost
@@ -501,284 +430,15 @@ public class ventana_productos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Tabla_VacunasFocusLost
 
     private void Tabla_DesparacitantesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_DesparacitantesMouseClicked
-        Tabla_PRODUCTOS_ADD.setDefaultRenderer(Object.class, new Render_Button_JTable());
-
-        ImageIcon icono;
-
-        JButton btn = new JButton("");
-        icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/borrar1.png"));
-        btn.setIcon(icono);
-        btn.setBounds(0, 0, 50, 35);
-        btn.setName("E");
-
-//            JButton btn2 = new JButton("");
-//            icono2 = new ImageIcon(getClass().getResource("/Iconos/editar.png"));
-//            btn2.setIcon(icono2);
-//            btn2.setBounds(0, 0, 50, 35);
-//            btn2.setName("M");
-        int seleccion = Tabla_Desparacitantes.rowAtPoint(evt.getPoint());
-
-        int columna = Tabla_Desparacitantes.getColumnModel().getColumnIndexAtX(evt.getX());
-        int fila = evt.getY() / Tabla_Desparacitantes.getRowHeight();
-
-        Tabla_PRODUCTOS_ADD.setModel(model);
-        Tabla_PRODUCTOS_ADD.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        Tabla_PRODUCTOS_ADD.getColumn("DESCRIPCION").setPreferredWidth(640);
-        Tabla_PRODUCTOS_ADD.getColumn("LOTE").setPreferredWidth(460);
-        Tabla_PRODUCTOS_ADD.getColumn("PRECIO UNITARIO").setPreferredWidth(190);
-        Tabla_PRODUCTOS_ADD.getColumn("CADUCIDAD").setPreferredWidth(245);
-        Tabla_PRODUCTOS_ADD.getColumn("PIEZAS").setPreferredWidth(115);
-        //Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(15);
-        Tabla_PRODUCTOS_ADD.getColumn("BORRAR").setPreferredWidth(65);
-        Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(0);
-
-        if (fila < Tabla_Desparacitantes.getRowCount() && fila >= 0 && columna < Tabla_Desparacitantes.getColumnCount() && columna >= 0) {
-            Object value = Tabla_Desparacitantes.getValueAt(fila, columna);
-            if (value instanceof JButton) {
-                ((JButton) value).doClick();
-                JButton boton = (JButton) value;
-
-                if (boton.getName().equalsIgnoreCase("AGREGAR")) {
-                    
-                        int stock = Integer.parseInt(String.valueOf(Tabla_Desparacitantes.getValueAt(seleccion, 2)));
-                        if (stock <= 10) {
-                            JOptionPane.showMessageDialog(null, "Quedan solamente " + stock + " piezas en existencia, recuerde surtir mas");
-                        }
-                        
-                        do {
-                            try {
-                                JOptionPane.showMessageDialog(null, "Recuerda que solo hay " + stock + " piezas");
-                                Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                                
-                                if (Pieza < 0) {
-                                    JOptionPane.showMessageDialog(null, "Error, no puedes ingresar numeros negativos", "Error", JOptionPane.ERROR_MESSAGE);
-                                    Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                                }
-                                
-                                if (Pieza == 0) {
-                                    JOptionPane.showMessageDialog(null, "Error, necesitas seleccionar minimo 1 pieza", "Error", JOptionPane.ERROR_MESSAGE);
-                                    Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                                }
-                                
-                            } catch (NumberFormatException e) {
-                                JOptionPane.showMessageDialog(null, "Error, Solo puedes ingresar numeros", "Error", JOptionPane.ERROR_MESSAGE);
-                                Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                            }
-                            
-                        } while (stock < Pieza || Pieza <= 0);
-                        
-                        Compra[0] = String.valueOf(Tabla_Desparacitantes.getValueAt(seleccion, 0)); //DESCRIPCION
-                        Compra[1] = String.valueOf(Tabla_Desparacitantes.getValueAt(seleccion, 1)); //LOTE
-                        Compra[2] = String.valueOf(Tabla_Desparacitantes.getValueAt(seleccion, 3)); //CADUCIDAD
-                        Compra[3] = String.valueOf(Tabla_Desparacitantes.getValueAt(seleccion, 4)); //PRECIO UNITARIO
-                        Compra[4] = Pieza;
-                        Compra[6] = stock;
-                        Compra[5] = btn;
-                        
-                        JOptionPane.showMessageDialog(null, "Productos Agregados");
-                        
-                        int filaExistente = -1;
-                        int ultimoValor = 0;
-                        
-                        // Buscar la fila correspondiente en Tabla_PRODUCTOS_ADD
-                        for (int i = 0; i < Tabla_PRODUCTOS_ADD.getRowCount(); i++) {
-                            String descripcion = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 0));
-                            String lote = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 1));
-                            if (descripcion.equals(Compra[0]) && lote.equals(Compra[1])) {
-                                filaExistente = i;
-                                ultimoValor = Integer.parseInt(String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 4))); // Obtener el último valor de "PIEZAS"
-                                break;
-                            }
-                        }
-                        
-                        if (filaExistente != -1) {
-                            // Sumar el valor de Compra[4] al último valor de "PIEZAS" y actualizarlo en la fila existente
-                            int nuevoValor = Integer.parseInt(Compra[4].toString());
-                            int NN = nuevoValor + ultimoValor;
-                            Tabla_PRODUCTOS_ADD.setValueAt(NN, filaExistente, 4); // Actualizar el valor de "PIEZAS"
-                            // Actualizar otros valores si es necesario
-                        } else {
-                            // Agregar una nueva fila si no existe una fila correspondiente
-                            model.addRow(Compra);
-                        }
-                        Filtraciones.UPDATE_DESPARACITANTES((stock - Pieza), Compra[1].toString());
-                        
-                    try {
-                        //filtraciones.Inventario_Vacunas("B", Tabla_Desparacitantes);
-                        adminDesparacitante.obtenerModeloTablaDesparacitantes(Tabla_Desparacitantes, "Productos");
-                    } catch (SQLException ex) {
-                        System.err.println(ex.getMessage());
-                    }  
-                }
-                Tabla_PRODUCTOS_ADD.setCellSelectionEnabled(true);
-
-            }
-
-            if (value instanceof JCheckBox) {
-                JCheckBox CH = (JCheckBox) value;
-                if (CH.isSelected() == true) {
-                    CH.setSelected(false);
-                }
-                if (CH.isSelected() == false) {
-                    CH.setSelected(true);
-                }
-            }
-        }
-
+        accionTablaDesparacitantes(evt);
     }//GEN-LAST:event_Tabla_DesparacitantesMouseClicked
 
     private void Tabla_MedicamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_MedicamentosMouseClicked
-        Tabla_PRODUCTOS_ADD.setDefaultRenderer(Object.class, new Render_Button_JTable());
-
-        ImageIcon icono, icono2;
-
-        JButton btn = new JButton("");
-        icono = new ImageIcon(getClass().getResource("/ArchiVet/Imagen/borrar1.png"));
-        btn.setIcon(icono);
-        btn.setBounds(0, 0, 50, 35);
-        btn.setName("E");
-
-//            JButton btn2 = new JButton("");
-//            icono2 = new ImageIcon(getClass().getResource("/Iconos/editar.png"));
-//            btn2.setIcon(icono2);
-//            btn2.setBounds(0, 0, 50, 35);
-//            btn2.setName("M");
-        int seleccion = Tabla_Medicamentos.rowAtPoint(evt.getPoint());
-
-        int columna = Tabla_Medicamentos.getColumnModel().getColumnIndexAtX(evt.getX());
-        int fila = evt.getY() / Tabla_Medicamentos.getRowHeight();
-
-        Tabla_PRODUCTOS_ADD.setModel(model);
-        Tabla_PRODUCTOS_ADD.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        Tabla_PRODUCTOS_ADD.getColumn("DESCRIPCION").setPreferredWidth(640);
-        Tabla_PRODUCTOS_ADD.getColumn("LOTE").setPreferredWidth(460);
-        Tabla_PRODUCTOS_ADD.getColumn("PRECIO UNITARIO").setPreferredWidth(190);
-        Tabla_PRODUCTOS_ADD.getColumn("CADUCIDAD").setPreferredWidth(245);
-        Tabla_PRODUCTOS_ADD.getColumn("PIEZAS").setPreferredWidth(115);
-        //Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(15);
-        Tabla_PRODUCTOS_ADD.getColumn("BORRAR").setPreferredWidth(65);
-        Tabla_PRODUCTOS_ADD.getColumn("").setPreferredWidth(0);
-
-        if (fila < Tabla_Medicamentos.getRowCount() && fila >= 0 && columna < Tabla_Medicamentos.getColumnCount() && columna >= 0) {
-            Object value = Tabla_Medicamentos.getValueAt(fila, columna);
-            if (value instanceof JButton) {
-                ((JButton) value).doClick();
-                JButton boton = (JButton) value;
-
-                if (boton.getName().equalsIgnoreCase("AGREGAR")) {
-                    int stock = Integer.parseInt(String.valueOf(Tabla_Medicamentos.getValueAt(seleccion, 2)));
-                    if (stock <= 10) {
-                        JOptionPane.showMessageDialog(null, "Quedan solamente " + stock + " piezas en existencia, recuerde surtir mas");
-                    }
-
-                    do {
-                        try {
-                            JOptionPane.showMessageDialog(null, "Recuerda que solo hay " + stock + " piezas");
-                            Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-
-                            if (Pieza < 0) {
-                                JOptionPane.showMessageDialog(null, "Error, no puedes ingresar numeros negativos", "Error", JOptionPane.ERROR_MESSAGE);
-                                Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                            }
-
-                            if (Pieza == 0) {
-                                JOptionPane.showMessageDialog(null, "Error, necesitas seleccionar minimo 1 pieza", "Error", JOptionPane.ERROR_MESSAGE);
-                                Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                            }
-
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Error, Solo puedes ingresar numeros", "Error", JOptionPane.ERROR_MESSAGE);
-                            Pieza = Integer.parseInt(JOptionPane.showInputDialog("Cunatas piezas desea agregar"));
-                        }
-
-                    } while (stock < Pieza || Pieza <= 0);
-
-                    Compra[0] = String.valueOf(Tabla_Medicamentos.getValueAt(seleccion, 0)); //DESCRIPCION
-                    Compra[1] = String.valueOf(Tabla_Medicamentos.getValueAt(seleccion, 1)); //LOTE
-                    Compra[2] = String.valueOf(Tabla_Medicamentos.getValueAt(seleccion, 3)); //CADUCIDAD
-                    Compra[3] = String.valueOf(Tabla_Medicamentos.getValueAt(seleccion, 4)); //PRECIO UNITARIO
-                    Compra[4] = Pieza;
-                    Compra[6] = stock;
-                    Compra[5] = btn;
-
-                    JOptionPane.showMessageDialog(null, "Productos Agregados");
-
-                    int filaExistente = -1;
-                    int ultimoValor = 0;
-
-                    // Buscar la fila correspondiente en Tabla_PRODUCTOS_ADD
-                    for (int i = 0; i < Tabla_PRODUCTOS_ADD.getRowCount(); i++) {
-                        String descripcion = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 0));
-                        String lote = String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 1));
-                        if (descripcion.equals(Compra[0]) && lote.equals(Compra[1])) {
-                            filaExistente = i;
-                            ultimoValor = Integer.parseInt(String.valueOf(Tabla_PRODUCTOS_ADD.getValueAt(i, 4))); // Obtener el último valor de "PIEZAS"
-                            break;
-                        }
-                    }
-
-                    if (filaExistente != -1) {
-                        // Sumar el valor de Compra[4] al último valor de "PIEZAS" y actualizarlo en la fila existente
-                        int nuevoValor = Integer.parseInt(Compra[4].toString());
-                        int NN = nuevoValor + ultimoValor;
-                        Tabla_PRODUCTOS_ADD.setValueAt(NN, filaExistente, 4); // Actualizar el valor de "PIEZAS"
-                        // Actualizar otros valores si es necesario
-                    } else {
-                        // Agregar una nueva fila si no existe una fila correspondiente
-                        model.addRow(Compra);
-                    }
-                    Filtraciones.UPDATE_MEDICAMENTOS((stock - Pieza), Compra[1].toString());
-                    try {
-                        //filtraciones.Inventario_Vacunas("C", Tabla_Medicamentos);
-                        adminMedicamento.obtenerModeloTablaMedicamentos(Tabla_Medicamentos, "Productos");
-                    } catch (SQLException ex) {
-                        System.err.println(ex.getMessage());
-                    }
-                }
-                Tabla_PRODUCTOS_ADD.setCellSelectionEnabled(true);
-
-            }
-
-            if (value instanceof JCheckBox) {
-                JCheckBox CH = (JCheckBox) value;
-                if (CH.isSelected() == true) {
-                    CH.setSelected(false);
-                }
-                if (CH.isSelected() == false) {
-                    CH.setSelected(true);
-                }
-            }
-        }
-
+        accionTablaMedicamentos(evt);
     }//GEN-LAST:event_Tabla_MedicamentosMouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        double Piezas, Precio;
-        double MAXT = 0;
-
-        for (int i = 0; i < Tabla_PRODUCTOS_ADD.getRowCount(); i++) {
-
-            Precio = Double.parseDouble(Tabla_PRODUCTOS_ADD.getValueAt(i, 2).toString());
-            Piezas = Double.parseDouble(Tabla_PRODUCTOS_ADD.getValueAt(i, 4).toString());
-
-            MAXT += Precio * Piezas;
-        }
-
-        if (SALDO != 0) {
-            Total_Cuenta.setForeground(Color.red);
-            PAGO.setForeground(Color.red);
-            Total_Cuenta.setText(String.valueOf(MAXT + SALDO));
-        } else if (SALDO == 0) {
-            Total_Cuenta.setForeground(Color.red);
-            PAGO.setForeground(Color.red);
-            Total_Cuenta.setText(String.valueOf(MAXT));
-        }
-
-        System.out.println(MAXT);
-        mostradorCaja.setVisible(true);
-        this.dispose();
+        botonVolver(); 
     }//GEN-LAST:event_jLabel3MouseClicked
 
 

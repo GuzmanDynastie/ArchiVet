@@ -20,12 +20,15 @@ import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
 
@@ -34,15 +37,13 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
     private ArchiVet.Imagen.imagenes imagen;
     private AdminUsuario adminUsuario;
 
-    //public static ArrayList VACUNAS = new ArrayList();
-    //public static ArrayList MEDICAMENTOS = new ArrayList();
-    //public static ArrayList DESPARACITANTES = new ArrayList();
+    public static ArrayList VACUNAS = new ArrayList();
+    public static ArrayList MEDICAMENTOS = new ArrayList();
+    public static ArrayList DESPARACITANTES = new ArrayList();
 
     public static int Seleccion, Contador_Servicio, STOCK;
     public static String TFolio, TMascota, TPropietario, TDescripcion, TFecha, TCargo, LOTE;
     public static String sexoMascota, PRODUCTOS_EXISTENTES;
-
-    public static boolean RES_CLAVE = false;
 
     private JComponent Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
     private Dimension dimBarra = null;
@@ -53,6 +54,20 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         Barra.setSize(0, 0);
         Barra.setPreferredSize(new Dimension(0, 0));
         repaint();
+    }
+    
+    private void tablaProductosADD() {
+        String[] TITULOS = {"DESCRIPCION", "LOTE", "PRECIO UNITARIO", "CADUCIDAD", "PIEZAS", "BORRAR", ""};
+        DefaultTableModel model = new DefaultTableModel(null, TITULOS);
+        int[] columnWidths = {640, 460, 190, 245, 115, 65, 0};
+        Tabla_PRODUCTOS_ADD.setModel(model);
+        TableColumnModel columnModel = Tabla_PRODUCTOS_ADD.getColumnModel();
+
+        // Configurar el ancho preferido para cada columna en función del arreglo
+        for (int i = 0; i < columnWidths.length; i++) {
+            TableColumn column = columnModel.getColumn(i);
+            column.setPreferredWidth(columnWidths[i]);
+        }
     }
 
     private void volver() {
@@ -89,6 +104,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         this.adminUsuario = adminUsuario;
 
         Filtraciones.BusquedaMascota_Fecha("", "");
+        tablaProductosADD();
         Volver.setToolTipText("Volver");
         Font myFont2 = new Font("Arial", Font.CENTER_BASELINE, 25);
         Venta.setFont(myFont2);
@@ -1003,7 +1019,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Agregar_otrosMouseClicked
 
     private void Tabla_PRODUCTOS_ADDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Tabla_PRODUCTOS_ADDFocusLost
-        RES_CLAVE = false;
+
     }//GEN-LAST:event_Tabla_PRODUCTOS_ADDFocusLost
 
 
