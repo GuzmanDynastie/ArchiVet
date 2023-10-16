@@ -15,12 +15,11 @@ public class ventana_registroMedico extends javax.swing.JFrame {
 
     public static boolean bandera = false;
 
-    
     public ventana_registroMedico() {
         initComponents();
         adminMedico = new AdminMedico();
         imagen = new ArchiVet.Imagen.imagenes();
-        
+
         adminMedico.obtenerModeloTablaPropietarios(MedicoIngresados);
     }
 
@@ -590,7 +589,7 @@ public class ventana_registroMedico extends javax.swing.JFrame {
 
     private void ELIMINARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ELIMINARMouseClicked
         eliminarMedico();
-        
+
     }//GEN-LAST:event_ELIMINARMouseClicked
 
     public static void main(String args[]) {

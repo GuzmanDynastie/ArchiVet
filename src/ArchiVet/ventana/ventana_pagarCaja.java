@@ -1,6 +1,5 @@
 package ArchiVet.ventana;
 
-
 import ArchiVet.ventana.componente.Creacion_PDF;
 import Archivet.Controlador.Filtraciones;
 import static ArchiVet.ventana.ventana_puntoVenta.ID_PET;
@@ -25,7 +24,7 @@ public class ventana_pagarCaja extends javax.swing.JInternalFrame {
 
     private static Creacion_PDF creacion_pdf;
     private ArchiVet.Imagen.imagenes imagen;
-    
+
     private JComponent Barra = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane();
     private Dimension dimBarra = null;
     public static String SEX = "";
@@ -437,13 +436,13 @@ public class ventana_pagarCaja extends javax.swing.JInternalFrame {
                 if (Folio2 < 10) {
                     creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(), "0000" + String.valueOf(Folio2));
                 } else if (Folio2 > 9 && Folio2 < 100) {
-                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(),"000" + String.valueOf(Folio2));
+                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(), "000" + String.valueOf(Folio2));
                 } else if (Folio2 > 99 && Folio2 < 1000) {
-                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(),"00" + String.valueOf(Folio2));
+                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(), "00" + String.valueOf(Folio2));
                 } else if (Folio2 > 999 && Folio2 < 10000) {
-                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(),"0" + String.valueOf(Folio2));
+                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(), "0" + String.valueOf(Folio2));
                 } else if (Folio2 > 9999 && Folio2 < 100000) {
-                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(),String.valueOf(Folio2));
+                    creacion_pdf.crearPDF(Nombre_Usuario_Pagar_Cuenta.getText(), Nombre_Mascota_Pagar_Cuenta.getText(), String.valueOf(Folio2));
                 }
 
                 //System.out.println(sexoMascota);
@@ -505,7 +504,7 @@ public class ventana_pagarCaja extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Ingresar_Pago_CuentaKeyTyped
 
     private void Ingresar_Pago_CuentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Ingresar_Pago_CuentaKeyPressed
-        
+
     }//GEN-LAST:event_Ingresar_Pago_CuentaKeyPressed
 
     private void Ingresar_Pago_CuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Ingresar_Pago_CuentaMouseClicked

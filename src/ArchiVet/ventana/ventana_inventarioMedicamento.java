@@ -26,7 +26,7 @@ public class ventana_inventarioMedicamento extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
             java.sql.Date fech = new java.sql.Date(fec);
-            
+
             medicamento = new Medicamento(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
             adminMedicamento.insertarMedicamento(medicamento);
             Limpiar();

@@ -30,7 +30,7 @@ public class ventana_iniciarSesion extends javax.swing.JFrame {
         } else if (adminUsuario.ingresarDataBase(new Usuario(usuario, contrasenia))) {
             nombreUsuario.add(usuario);
             //adminUsuario.agregarUsuario(usuario);
-            
+
             JOptionPane.showMessageDialog(null, "Bienvenido");
             LimLog();
             inicio.setEnabled(true);

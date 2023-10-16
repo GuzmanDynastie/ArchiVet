@@ -61,7 +61,7 @@ public class AdminVacuna {
         for (int i = 0, len = vacuna.length; i < len; i++) {
             data[i] = vacuna[i].toArray();
         }
-            return data;
+        return data;
     }
 
     public Vacuna[] obtenerVacunasInventarios() throws SQLException {

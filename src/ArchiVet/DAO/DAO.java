@@ -2,8 +2,6 @@ package ArchiVet.DAO;
 
 import ArchiVet.Util.ConexionBaseDatosGenerica;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class DAO {
 
@@ -24,7 +22,7 @@ public abstract class DAO {
             connection = new ConexionBaseDatosGenerica(SERVIDOR, 0, NOMBRE_BD, USUARIO, CONTRASENIA);
             //connection = new ConexionBaseDatosGenerica("sql9.freesqldatabase.com", 0, NOMBRE_BD, "sql9598240", "LfgbDjiVZ7");
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -33,7 +31,7 @@ public abstract class DAO {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println(ex.getMessage());
             }
         }
     }

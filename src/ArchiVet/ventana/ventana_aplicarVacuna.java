@@ -40,9 +40,9 @@ public class ventana_aplicarVacuna extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se ha guardado\nVerifique los campos", "Error", JOptionPane.DEFAULT_OPTION);
         }
     }
-    
+
     private void nombreMedico(Usuario usuario) {
-        
+
     }
 
     public ventana_aplicarVacuna(AdminUsuario adminUsuario) {
@@ -50,7 +50,7 @@ public class ventana_aplicarVacuna extends javax.swing.JFrame {
         this.adminUsuario = adminUsuario;
 
         System.out.println(adminUsuario.dameListaUsuarios());
-        
+
         obd.combovacu(Descripcion);
     }
 

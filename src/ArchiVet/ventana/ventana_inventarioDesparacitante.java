@@ -26,7 +26,7 @@ public class ventana_inventarioDesparacitante extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
             java.sql.Date fech = new java.sql.Date(fec);
-            
+
             desparacitante = new Desparacitante(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
             adminDesparacitante.insertarDesparacitante(desparacitante);
             Limpiar();

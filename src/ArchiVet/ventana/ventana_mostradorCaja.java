@@ -55,7 +55,7 @@ public class ventana_mostradorCaja extends javax.swing.JInternalFrame {
         Barra.setPreferredSize(new Dimension(0, 0));
         repaint();
     }
-    
+
     private void tablaProductosADD() {
         String[] TITULOS = {"DESCRIPCION", "LOTE", "PRECIO UNITARIO", "CADUCIDAD", "PIEZAS", "BORRAR", ""};
         DefaultTableModel model = new DefaultTableModel(null, TITULOS);

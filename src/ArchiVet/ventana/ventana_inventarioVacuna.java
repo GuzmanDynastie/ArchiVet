@@ -26,7 +26,7 @@ public class ventana_inventarioVacuna extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Se ha guardado con exito", "Guardado", JOptionPane.DEFAULT_OPTION);
             long fec = Caducidad.getDate().getTime();
             java.sql.Date fech = new java.sql.Date(fec);
-            
+
             vacuna = new Vacuna(Descripcion.getText(), Lote.getText(), Integer.parseInt(Cantidad.getText()), Double.parseDouble(Precio.getText()), fech);
             adminVacuna.insertarVacuna(vacuna);
             Limpiar();
@@ -41,7 +41,7 @@ public class ventana_inventarioVacuna extends javax.swing.JFrame {
         initComponents();
         adminVacuna = new AdminVacuna();
         imagen = new ArchiVet.Imagen.imagenes();
-        
+
     }
 
     @SuppressWarnings("unchecked")

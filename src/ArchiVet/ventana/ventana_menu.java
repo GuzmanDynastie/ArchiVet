@@ -51,7 +51,7 @@ public class ventana_menu extends javax.swing.JFrame {
 
     public ventana_menu(AdminUsuario adminUsuario) throws SQLException {
         initComponents();
-        
+
         FondoBotones.setOpaque(false);
         this.adminUsuario = adminUsuario;
         panel = new FondoBotones();

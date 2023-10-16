@@ -95,7 +95,7 @@ public class ventana_historialMedico extends javax.swing.JInternalFrame {
 
         System.out.println(Arrays.toString(adminUsuario.dameNombreMedico()).replaceAll("\\[|\\]", ""));
         System.out.println(ventana_iniciarSesion.nombreUsuario.get(0).toString());
-        
+
         Motivo.setLineWrap(true);
         Diagnostico.setLineWrap(true);
         Receta.setLineWrap(true);
